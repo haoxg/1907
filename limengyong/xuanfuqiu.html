@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            #box {
+                position: relative;
+            }
+
+            .qiu {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background-color: tomato;
+                position: absolute;
+                left: 50px;
+                top: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box">
+            <div class="qiu" v-drap.left.top.right.bottom="true"></div>
+        </div>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.directive('drap', (el, arg) => {
+            console.log(el, arg)
+            var maxX, maxY, left, right, top, bottom
+            if (arg.value) {
+                el.onmousedown = function (e) {
+                    var evt = e || event;
+                    var downX = evt.offsetX;
+                    var downY = evt.offsetY;
+                    var min = 0;
+                    maxX = document.documentElement.clientWidth - el.clientWidth;
+                    maxY = document.documentElement.clientHeight - el.clientHeight;
+                    onmousemove = function (e) {
+                        var evt = e || event;
+                        var moveX = evt.clientX - downX;
+                        var moveY = evt.clientY - downY;
+                        moveX = moveX < min ? min : moveX;
+                        moveY = moveY < min ? min : moveY;
+                        moveX = moveX > maxX ? maxX : moveX;
+                        moveY = moveY > maxY ? maxY : moveY;
+                        el.style.left = moveX + 'px'
+                        el.style.top = moveY + 'px'
+                    }
+                }
+                onmouseup = function () {
+                    onmousemove = null;
+                    if (arg.modifiers.top && el.offsetTop == 0) {
+                        top = el.offsetTop - el.clientHeight / 2
+                        el.style.top = el.offsetTop - el.clientHeight / 2 + 'px'
+                    } else if (arg.modifiers.left && el.offsetLeft == 0) {
+                        left = el.offsetLeft - el.clientWidth / 2
+                        el.style.left = el.offsetLeft - el.clientWidth / 2 + 'px'
+                    } else if (arg.modifiers.bottom && el.offsetTop == maxY) {
+                        bottom = el.offsetTop + el.clientHeight / 2
+                        el.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
+                    } else if (arg.modifiers.right && el.offsetLeft == maxX) {
+                        right = el.offsetLeft + el.clientWidth / 2
+                        el.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
+                    }
+                    // if (el.offsetLeft == 0) {
+                    //     left = el.offsetLeft - el.clientWidth / 2
+                    //     el.style.left = el.offsetLeft - el.clientWidth / 2 + 'px'
+                    // } else if (el.offsetLeft == maxX) {
+                    //     right = el.offsetLeft + el.clientWidth / 2
+                    //     el.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
+                    // } else if (el.offsetTop == 0) {
+                    //     top = el.offsetTop - el.clientHeight / 2
+                    //     el.style.top = el.offsetTop - el.clientHeight / 2 + 'px'
+                    // } else if (el.offsetTop == maxY) {
+                    //     bottom = el.offsetTop + el.clientHeight / 2
+                    //     el.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
+                    // }
+                }
+
+                el.onmouseover = function () {
+                    if (el.offsetLeft == left) {
+                        el.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
+                    } else if (el.offsetLeft == right) {
+                        el.style.left = el.offsetLeft - el.clientWidth / 2 + 'px'
+                    } else if (el.offsetTop == top) {
+                        el.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
+                    } else if (el.offsetTop == bottom) {
+                        el.style.top = el.offsetTop - el.clientHeight / 2 + 'px'
+                    }
+
+                }
+                el.onmouseout = function () {
+                    if (el.offsetLeft == 0) {
+                        el.style.left = el.offsetLeft - el.clientWidth / 2 + 'px'
+                    } else if (el.offsetLeft == maxX) {
+                        el.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
+                    } else if (el.offsetTop == 0) {
+                        el.style.top = el.offsetTop - el.clientHeight / 2 + 'px'
+                    } else if (el.offsetTop == maxY) {
+                        el.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
+                    }
+                }
+            }
+
+        })
+        new Vue({
+            el: '#box'
+        })
+    </script>
+
+</html>
