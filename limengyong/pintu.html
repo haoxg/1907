@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            #box {
+                user-select: none;
+            }
+
+            .biao {
+                position: relative;
+            }
+
+            .item {
+                width: 100px;
+                height: 100px;
+                border: 1px solid #000000;
+                text-align: center;
+                line-height: 100px;
+                font-size: 40px;
+                position: absolute;
+                cursor: pointer;
+            }
+
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box" v-cloak="">
+            <div class="content">
+                <div class="biao" :style="{width:100*size+'px',height:100*size+'px'}">
+                    <div class="item" v-for="(i,$index) in numList" :key="i"
+                        :style="{left:100*($index%size)+'px',top:100*(parseInt($index/size))+'px'}"
+                        @click="xiaQi($index)">
+                        {{i}}
+                    </div>
+                </div>
+            </div>
+            <div class="anniu">
+                <button @click="btn">3*3</button>
+                <button @click="btn1">4*4</button>
+                <button @click="btn2">5*5</button>
+            </div>
+            <div>用时:<span>{{time}}</span></div>
+
+        </div>
+
+    </body>
+    <script src="./vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#box',
+            data: {
+                numList: [],
+                num: 9,
+                time: 0,
+                sumList: []
+            },
+            timer: null,
+            created() {
+                this.fn()
+
+            },
+            computed: {
+                size() {
+                    return Math.sqrt(this.numList.length)
+                }
+            },
+            watch: {
+                numList(newVal) {
+                    if (newVal.toString() == this.sumList.toString()) {
+                        console.log('you win !')
+                        clearInterval(this.timer)
+                    }
+                }
+            },
+            methods: {
+                xiaQi(i) {
+
+                    if (this.isMove(i)) {
+                        var temp = this.numList[i]
+                        var kongIndex = -1
+                        this.numList.forEach((item, index) => {
+                            if (item == '') {
+                                kongIndex = index
+                            }
+                        })
+                        Vue.set(this.numList, kongIndex, temp)
+                        Vue.set(this.numList, i, '')
+                    }
+
+                },
+
+                fn() {
+                    clearInterval(this.timer)
+                    let arr = []
+                    for (let i = 0; arr.length < this.num - 1; i++) {
+                        let w = Math.ceil(Math.random() * (this.num - 1))
+                        if (arr.indexOf(w) == -1) {
+                            arr.push(w)
+                        }
+                    }
+                    this.numList = arr
+                    this.sumList = arr.slice()
+                    this.numList.push('')
+                    this.sumList.sort((a, b) => {
+                        return a - b
+                    })
+                    this.sumList.push('')
+
+                    this.timer = setInterval(() => {
+                        this.time++
+                    }, 1000)
+                },
+                isMove(i) {
+                    var spaceIndex;
+                    this.numList.forEach((item, index) => {
+                        if (item == '') {
+                            spaceIndex = index
+                        }
+                    })
+
+                    if (spaceIndex % this.size == 0) {
+                        if (i == spaceIndex + 1 || i == spaceIndex + this.size || i == spaceIndex - this.size) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    } else if ((spaceIndex + 1) % this.size == 0) {
+                        if (i == spaceIndex - 1 || i == spaceIndex + this.size || i == spaceIndex - this.size) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    } else {
+                        if (i == spaceIndex + 1 || i == spaceIndex - 1 || i == spaceIndex + this.size || i ==
+                            spaceIndex - this.size) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+
+                },
+
+                btn() {
+                    this.num = parseInt(3 * 3)
+                    this.time = 0
+                    this.fn()
+
+                },
+                btn1() {
+                    this.num = parseInt(4 * 4)
+                    this.time = 0
+                    this.fn()
+
+
+                },
+                btn2() {
+                    this.num = parseInt(5 * 5)
+                    this.time = 0
+                    this.fn()
+
+                }
+            },
+
+        })
+    </script>
+
+</html>
