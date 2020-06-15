@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title></title>
+
+    <style></style>
+</head>
+
+<body>
+    <div id="app">
+        <card v-for="i in 3"></card>
+    </div>
+    <template id="card">
+        <div class="card">
+            <!-- 组件里面 -->
+            <div class="card-feed">
+                <div class="avator">
+                    <img src="https://tvax4.sinaimg.cn/crop.0.0.178.178.50/6200e46aly1gdiktlx0r1j204z04zaa1.jpg?KID=imgbed,tva&Expires=1591891006&ssig=vW5rIMWsev"
+                        alt="" srcset="">
+                </div>
+                <div class="content">
+                    <div class="info">
+                        <div class="s-fr">
+                            <i class="glyphicon glyphicon-menu-down" href="#"></i>
+                        </div>
+                        <div class="name">
+                            美国国家地理
+                        </div>
+                    </div>
+                    <!-- 组件里面的里面 -->
+                    <content-text></content-text>
+                    <card-act></card-act>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="txt">
+        <div>
+            <p class="txt">
+                <a style="cursor: pointer; text-decoration:none;">#net geo直击     ​​​​
+            </p>
+            <b class="p1"> 新冠疫情期间，美国各地疗养院与辅助看护机构纷纷采取隔离措施，阿尔茨海默症等痴呆症患者无法接受亲友探望，日常规律被打破。由于认知障碍，痴呆症患者往往无法理解变化的原因，面临恐慌与压力。这些患者有的会突然失去阅读能力，有的则开始拒绝进食。详戳O网页链接</b>
+            <div>
+                <div class="media ">
+                    <ul class="m3">
+                        <li><img src="https://wx2.sinaimg.cn/mw690/6200e46agy1gfoegq1rdtj20x20lzdm8.jpg" alt=""></li>
+
+                        <li><img src="https://wx3.sinaimg.cn/mw690/6200e46agy1gfoegqnyvtj20x20m1dps.jpg" alt=""></li>
+
+                        <li><img src="https://wx3.sinaimg.cn/mw690/6200e46agy1gfoegpn51oj20x20lz47p.jpg" alt=""></li>
+
+                        <li><img src="https://wx4.sinaimg.cn/mw690/6200e46agy1gfoegqq49yj20x20lz7du.jpg" alt=""></li>
+
+                        <li><img src="https://wx3.sinaimg.cn/mw690/6200e46agy1gfoegr8clcj20x20lz162.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="from">
+                <a href="#">{{10|money}}</a>
+            </div>
+        </div>
+    </template>
+    <template id="card-act">
+        <div class="card-act">
+            <ul>
+                <li><a>收藏</a></li>
+                <li><a>转发 17</a></li>
+                <li><a>评论 41</a></li>
+                <li><a @click="sum++"><i class="glyphicon glyphicon-thumbs-up">{{sum}}</i></a></li>
+            </ul>
+        </div>
+    </template>
+     <script>
+        // 全局组件
+        Vue.component("card", {
+            template: "#card",
+        })
+        Vue.component('content-text', {
+            template: "#txt",
+            data() {
+                return {
+                    mas: "组件"
+                }
+            },
+            filters: {
+                "money": function(val, arg1, arg2) {
+                    return val + '小时前'   
+                }
+            }
+        })
+        Vue.component('card-act', {
+            template: "#card-act",
+            data() {
+                return {
+                    sum: 0
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+        })
+    </script>
+</body>
+
+</html>
