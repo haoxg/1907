@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1883577_mnbdo6hn62.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            #box {
+                width: 500px;
+                margin: 50px auto;
+            }
+
+            p {
+                font-size: 25px;
+            }
+
+            .icon-xingxing {
+                font-size: 25px;
+                color: #c0c4cc;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box">
+            <el-rate></el-rate>
+            <el-rate :colorlist="colors"></el-rate>
+            <el-rate :showtext="a"></el-rate>
+            <el-rate v-disabled="true"></el-rate>
+        </div>
+        <template id="el-rate">
+            <div>
+                <p>评分</p>
+
+                <span v-for="(i,$index) in 5" @mouseover="over($index)" @mouseout="out" :key="i.id" ref="span">
+                    <i class="iconfont icon-xingxing" ref="i"></i>
+                </span>
+
+                <span v-show="isshow">{{text | s(n)}}</span>
+            </div>
+        </template>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('el-rate', {
+            template: '#el-rate',
+            props: ['showtext', 'colorlist'],
+            data() {
+                return {
+                    text: ['极差', '失望', '一般', '满意', '惊喜'],
+                    n: 0,
+                    isshow: false
+                }
+            },
+            methods: {
+                over(index) {
+                    item = this.$refs.i
+                    num = index + 1
+                    if (this.colorlist != undefined) {
+                        console.log(this.colorList)
+                        for (let i = 0; i < num; i++) {
+                            if (i < 2) {
+                                item[i].style.color = this.colorlist[0];
+                                item[i].className = 'iconfont icon-xingxing1';
+                                item[i].style.fontSize = '25px';
+                            } else if (i < 3) {
+                                for (let i = 0; i < num; i++) {
+                                    item[i].style.color = this.colorlist[1];
+                                    item[i].className = 'iconfont icon-xingxing1';
+                                    item[i].style.fontSize = '25px';
+                                }
+                            } else if (i < 4) {
+                                for (let i = 0; i < num; i++) {
+                                    item[i].style.color = this.colorlist[2];
+                                    item[i].className = 'iconfont icon-xingxing1';
+                                    item[i].style.fontSize = '25px';
+                                }
+                            }
+
+                        }
+                    } else {
+                        for (let i = 0; i < num; i++) {
+                            item[i].style.color = 'rgb(247,186,42)';
+                            item[i].className = 'iconfont icon-xingxing1';
+                            item[i].style.fontSize = '25px';
+                        }
+                    }
+                    this.n = index
+                    if (this.showtext != undefined) {
+                        this.isshow = true
+                    }
+
+
+                },
+                out() {
+                    item = this.$refs.i
+                    item.forEach((i, j) => {
+                        i.style.color = '#c0c4cc';
+                        i.className = 'iconfont icon-xingxing';
+                    })
+                    this.isshow = false
+                }
+            },
+            filters: {
+                's': (val, arg) => {
+                    return val[arg]
+
+                }
+            },
+            directives: {
+                'disabled': (el, rag) => {
+                    if (arg.value) {
+                        Object.freeze(this.data)
+                    }
+                }
+            }
+        })
+
+        new Vue({
+            data() {
+                return {
+                    a: false,
+                    colors: ['#99A9BF', '#F7BA2A', '#FF9900']
+                }
+            }
+        }).$mount('#box')
+    </script>
+
+</html>
