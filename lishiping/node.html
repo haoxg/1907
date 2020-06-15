@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		h3 {
+			color: blue
+		}
+
+		xmp {
+			display: inline-block;
+		}
+
+		h1 {
+			color: red;
+		}
+
+		span {
+			font-size: 20px;
+			color: blueviolet;
+		}
+	</style>
+</head>
+
+<body>
+	<pre>
+<h1>
+none笔记
+</h1>
+<hr>
+<h3><span>一、定义</span> ：node是一种前台运行环境，node是js的语法，node可以写后台
+   express（简化了node语法，更容易上手）
+   1.cnpm i express --save|| npm i express --save（下载）
+   2.cnpm i 一次性下载出来package.json的记录插件
+<hr>
+<span>二、创建服务器</span>
+	var express = require('express')//引入
+	var app = express()//声明服务器
+
+	//静态资源加载
+	app.use(expess.static('./public'))
+	//监听服务器
+	app.listen(8000,()=>{
+			   //启动成功回调
+			   console.log('ok')
+	   })
+<hr>
+<span>三、接口</span>
+    get
+	  app.get('/get', (req, res) => {
+	  res.setHeader('Access-Control-Allow-Origin', '*')  //设置响应的请求头
+	  var json = req.query  //获取get前台发送数据
+	  res.send('你好' + json.user) //--响应  以下的代码不执行
+	  console.log(json)
+	})
+    post
+	  app.use(express.urlencoded({}))
+	  app.post('/login/up',(req,res)=>{
+	  var json = req.body
+	  res.send(json)
+    })
+<hr>
+<span>四、中间件</span>:为中间层次，数据处理，解析，类似于中间商
+<hr>
+<span>五、common</span>的5个参数
+  1.exports  单个暴露
+  2.require   引入
+	1 系统模块（官方提供的）
+		require （name）
+	2 第三方模块 （npm下载的）
+		require （name）
+	3 自定义模块（自己写的）
+		require ('./name')
+  3.module.exports 暴露对象 暴露的是什么，引入的就是什么
+  4.__dirname  启动文件所在文件夹路径
+  5.__filename 启动文件路径
+<hr>
+<span>六、子级路由</span>
+  app.js
+    var express = require('express')
+    var login  = require('./login')
+    var app = express()
+    app.use('/login',login)        
+    app.listen(8000,()=>{})
+  login.js
+    var express = require('express')
+    var router = express.Router()
+	router.get('/',(req,res)=>{})
+<hr>
+<span>七、fs：（文件操作系统）</span>
+1.文档 file
+   创建/更新
+     异步 writeFile(path,data,utf8,(err)=>{})
+     同步 writeFileSync(path,data,utf8)
+   读取
+     异步readFile(path,utf8,(err,data)=>{})
+     同步var data = readFileSync()
+   追加
+     异步appendFile(path,data,utf8,(err)=>{})
+     同步appendSync(path,data,utf8)
+   改名字
+     异步 rename(oldname,newname,(err)=>{})
+     同步 renameSync(oldname,newname)
+   删除
+     同步unlink(path,(err)=>{})
+     异步unlinkSync(path)
+2.文件夹
+   创建
+     同步 mkdir(name,(err)=>{})
+     异步 mkdirSync(name)
+   读取
+     同步readdir(path,(err,files)=>{})
+     异步var files = readdirSync(path)
+   删除
+     同步rmdir(path,(err)=>{})
+     异步rmdirSync(path)
+   改名字
+     同步 rename(oldname,newname,(err)=>{})
+	 异步renameSync(oldname,newname)
+<hr>
+<span>八、页面之间传值</span>
+    1.url缀参数 适合直系关系页面，两个页面之间
+    2.本地存储  多个页面之间传值
+    3.cookie ，兼容性最好的，在前台使用也是最复杂的，
+	   cookie是后台给前台设置，
+	   前台发送ajax给后台获取cookie
+<hr>
+<span>九、文件上传</span>
+1.后台上传：
+express 脚手架（辅助工具）
+	安装： cnpm install -g express-generator
+	使用：
+	 1.express name
+	 2.cd name
+	 3.cnpm i
+	 4.npm start
+multer ：第三方插件
+   安装：cnpm i multer --save
+   手动存储
+	router.use(multer().any())
+	var files = req.files
+	fs.writeFileSync  //手动创建
+   自动存(哈希值命名,不会出现名字重复)
+	router.use(multer({dest:'path'}).any())
+	var files = req.files
+	fs.rename 修改名字
+2.前台上传：
+   1.vue:
+    <img src="img/vue.png">
+   2.jq
+    <img src="img/jq.png">
+   3.js
+    <img src="img/js.png">
+<hr>
+<span>十、musql：</span>
+1.mysql 数据类型
+  a.数值类型
+    int
+    bigint
+  b.字符串类型
+    varchar
+    longtext
+  c.时间类型
+    datetime
+    timestamp
+2.安装：cnpm i mysql --save
+3.后台使用：
+    1 引入
+        var mysq = require('mysql')
+    2 创建数据池
+        var pool = mysql.createPool({
+        host   //mysql所在的ip地址
+        user   //mysql账号
+        password   //mysql密码
+        database   //数据库名字
+        })
+    3 创建连接
+        pool.getConnection((err,connection)=>{
+            if(err){console.log(err);return}
+                connection.query(sql,[],(err,data)=>{
+                    if(err){console.log(err);return}
+                        connection.release()
+                        })
+                    })
+    4.sql语句：
+        查找 select
+            select 结果范围 from 表名 where 条件
+            select * from list  limit 10,10   //截取   //limit 下标,多少个 
+            select uid,title from list where uid=1 or a=12
+            select * from list where user like"%a%"  // 查找 user字段包含 a的数据
+        修改  update
+            update 表名 set key=value,key2=value2 where 条件
+        增加（插入）   insert
+            insert into 表名(key1,key2) values(v1,v2)
+        删除  delete
+        	delete from 表名 where 条件
+        	delete from login where user=1 and pass=2
+</h3>
+</pre>
+</body>
+
+</html>
