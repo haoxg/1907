@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		h3 {
+			color: blue
+		}
+
+		xmp {
+			display: inline-block;
+		}
+
+		h1 {
+			color: red;
+		}
+
+		span {
+			font-size: 20px;
+			color: blueviolet;
+		}
+	</style>
+</head>
+
+<body>
+	<pre>
+<h1>VUE笔记</h1>
+<hr>
+<h3><span>一、定义：</span> mvvm类型，渐进式框架（渐进式->按需引入 引入的两种方式 1.直接引入2.环境开发）</h3>
+<hr>
+<h3><span>二、指令：</span> 
+	1.v-on 事件绑定
+	2.v-for 循环 属性：key->进行标记，不至于在计算时候出现混乱
+	   1.数组、字符串、数字  （i,$index）
+	    数字:<xmp><div v-for="(每一项,$index) in 10"></div></xmp>
+		字符串<xmp><div v-for="(每一项,$index) in str"></div></xmp>
+		数组<xmp><div v-for="(每一项,$index) in arr"></div></b></xmp>
+		对象json<xmp><div v-for="(value,$key,$index) in json"></div></xmp>
+           2.注意事项（数据更新视图不更新
+		arr
+		  1.通过下标改数据
+		    1.js: arr.splice()
+		    2.vue: this.$set(arr,下标，数据)
+		  2.通过length改长度
+		json
+		  1.动态添加key值
+		    1.this.$set(json,key,内容)
+	3.v-bind 属性绑定
+		当你要使用vue的时候，比如vue的变量控制，这个时候需要用属性绑定
+		语法糖：（冒号）s
+	v-cloak 包含的部分渲染完成之后移除属性
+	5.v-model 双向绑定（多用于表单上面
+		1.输出值是一个的话，类型是string
+		2.输出值是多个的话，类型是 数组
+	6.v-show 显示隐藏 所有条件的dom都会加载 没有缓存 消耗低 适合频繁切换
+	7.v-if 判读 只会加载符合条件的dom 有缓存 消耗高 适合偶尔判断
+	8.v-else
+	9.v-else-if
+	10.v-pre 跳出渲染
+	11.v-text innerText 输出
+	12.v-html innerHTML输出
+	13.v-once 只渲染一次
+</h3>
+<hr>
+<h3><span>三、方法:</span>
+	 1.ref：获取dom
+	 语法：<div ref="name">
+	 this.$refs
+	 2. $nextTick  ->视图渲染完成回调
+</h3>
+<hr>
+<h3><span>四、实例</span>
+Vue({
+  el:  作用域
+  data  初始化变量
+  methods  事件函数
+})
+</h3>
+<hr>
+<h3><span>五、生命周期</span>
+  创建前  beforeCreate
+  创建后  created
+  渲染前  beforeMount
+  渲染后  mounted
+  更新前  beforeUpdate
+  更新后  updated
+  销毁前 beforeDestroy
+  销毁后  destroyed
+</h3>
+<hr>
+<h3><span>六、侦听属性（watch）:</span>就是看着某一个数据的变化。
+	侦听属性和生命周期视图更新（update）的区别是什么？
+        生命周期视图更新（update）监听的是组件视图发生改变，侦听属性监听的是某一个数据的变化
+	例：
+	  watch:{
+		num(newdata,olddata){
+		  console.log(newdata,olddata)
+			 }
+				}
+</h3>
+<hr>
+<h3><span>七、计算属性（computed）:</span>
+  1.数据发生改变时，计算属性会重新计算 
+  2.必须写return
+  3.需要计算的：算法（数组去重，随机打乱数组）
+  4.计算属性和事件函数（methods）的区别是什么？
+    计算属性有缓存，并且可以使用watch进行监听，可以取到上一个数据节点 可以直接进行输出
+    事件函数没有缓存，不可以使用watch进行监听，不可以取到上一个数据节点 使用函数调用输出   
+</h3>
+<hr>
+<h3><span>八、vue-resource </span>
+  请求方式：
+  get
+    this.$http.get(url,{params:{}}).then((data)=>{},(err)=>{})
+  post
+    this.$http.post(url,{},{emulateJSON:true}).then((data)=>{},(err)=>{})
+  jsonp
+	this.$http.jsonp(url,{params:{},jsoncallback:callbacksname}).then((data)=>{},(err)=>{})
+</h3>
+<hr>
+<h3><span>九、vue（ajax）:</span>
+  vue的ajax和原生的ajax没有冲突
+  vue 也可以使用原生ajax
+  js和vue在效果的区别是：
+	js：
+	  先获取后操作（先获取到dom对象，然后加操作）
+	vue：
+	  不用获取，直接使用v-bind，v-on加操作
+</h3>
+<hr>
+<h3><span>十、项目管理工具:</span>
+<b>1.git ->项目管理工具->分散式</b>  
+<b>2.svn ->项目管理工具 ->集中式</b>
+.git
+  1.开发电脑上git程序
+     gui  可视化操作
+     bash  命令符式
+  2.有远程仓库（github(国外的开源网站)、码云（国内的，速度更快））
+     码云 https://gitee.com/ 注册一个账号
+     创建远程仓库
+  注意:1.上传远程仓库时，是同一个项目（新仓库忽略）
+	   2.上传版本要大于仓库现有版本
+   命令符:
+   创建管理
+	git init
+	加入版本管理
+	git add 文件名
+	git add .
+	添加到版本库
+	git commit  -m ‘备注’
+	查看修改过的
+	git status
+	添加到远程仓库
+	git push  地址 分支名
+	在本地声明一个远程地址的名字
+	git  remote add   名字  地址
+	克隆远程
+	git clone 地址
+	远程更新本地
+	git pull 地址 分支名
+	版本日志
+	git log  --pretty-oneline
+	切换版本
+	git reset --hard HEAD
+	痕迹
+	git reflog
+	查看分支
+	git branch
+	创建分支
+	git branch 名字
+	切换分支
+	git checkout  分支名字
+	合并分支
+	git merge 分支名字
+	配置 账号密码公钥  push 需要用 ssh
+	ssh-keygen -t rsa -c  邮箱地址
+</h3>
+<hr>
+<h3><span>十一、自定义过滤  filter</span>定义：给数据换一种形式输出
+全局定义 （声明之后，所有的作用域都可以使用）（不得不用）
+	Vue.filter(name,(data,arguments1,arguments2...)=>{})
+局部定义  （只能在声明的作用域单独使用）
+	filters:{
+		name(data,arguments1,arguments2...){}
+	}
+注意：1.自定义过滤一定要有 return
+2.不管全局还是局部 this指向都不是Vue对象，而是window对象
+|  管道符
+预期：
+	在双花括号中
+	{{ message | capitalize }}
+	在 `v-bind` 中
+	<xmp><div v-bind:id="rawId | formatId"></div></xmp>
+</h3>
+<hr>
+<h3><span>十二、自定义指令 directive</span> 
+什么时候用到自定义指令呢？
+	把一种效果的封装（只作用于指令绑定dom元素，或者子级因素的js效果）
+1函数定义
+	全局
+	Vue.directive(name,(dom,json,newvnode,oldvnode)=>{})
+	局部
+	directives:{
+		name(dom,json,newvnode,oldvnode){}
+		}
+2生命周期
+	bind  初次绑定调取 (获取不到子级元素 created)
+	inserted  这个生命周期可以获取父级下边的dom（可以获取到子级元素了）（mounted）
+	update  视图发生改变（beforeUpdate）
+	componentUpdated  子级组件视图发生改变（updated）
+	unbind  解除绑定  （destroy）
+  全局
+    Vue.directive('name',{
+	   bind  初次绑定调取
+	   inserted  这个生命周期可以获取父级下边的dom
+	   update  视图发生改变
+	   componentUpdated  子级组件视图发生改变
+	   unbind  解除绑定
+	})
+  局部
+    directives:{
+	   bind  初次绑定调取
+	   inserted  这个生命周期可以获取父级下边的dom
+	   update  视图发生改变
+	   componentUpdated  子级组件视图发生改变
+	   unbind  解除绑定
+	}
+</h3>
+<hr>
+<h3><span>十三、vue动画</span>
+内置组件 transition
+触发动画的索引
+	1条件判断 v-if
+	2显示隐藏 v-show
+	3动态组件?
+	4组件根节点?
+过渡类名
+	隐藏到显示
+	1.v-enter  开始时状态
+	2.v-enter-active  过渡时状态
+	3.v-enter-to  结束时状态
+	显示到隐藏
+	4.v-leave 开始时状态
+	5.v-leave-active 过渡时状态
+	6.v-leave-to 结束时状态
+基础用法:
+  <xmp><transition name="no1">
+    <div v-show=""></div>
+</transition>配合css类名使用</xmp>
+</h3>
+<hr>
+<h3>组件（css，html，js）
+1 组件注册
+  1局部
+	components:{
+	name:{
+	template:""
+	}
+	}
+  2全局
+	Vue.component(name，{
+	template:""
+	})
+2 输出
+	1 component
+	2 标签
+3.动态组件（动态组件切换）
+	动态改变component输出的is值
+4.组件缓存
+	 keep-alive  
+		--mounted  失效（初次渲染会触发）
+		--beforeMount 失效 （初次渲染会触发）
+		--created 失效 （初次渲染会触发）
+		--beforeCreate 失效 （初次渲染会触发）
+		+ activated  组件激活之后
+		+deactivated 组件停用之后
+5.插槽（容器）
+	slot:
+	<xmp><div></div>
+<slot></slot></xmp>
+	slot name=""
+	<xmp><div slot="a"></div>
+<slot name="a"></slot></xmp>
+6 组件传值
+	父级到子级传值
+	props
+	注意：直接传入的值是一个只读状态，不可改变，需要重新命名
+7.内置组件
+	tranistion
+	component
+	template
+	keep-alive
+	solt  
+8.注意事项
+	1.组件注册必须要有根元素标签(vue，react都是)
+	2  组件中不要写id
+	3 如果组件名是驼峰式写法，输出需要-拼接
+	4 在哪个区间渲染，就是在哪个区间声明
+</h3>
+	</pre>
+</body>
+
+</html>
