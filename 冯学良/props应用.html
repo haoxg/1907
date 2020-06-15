@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.el-rate span {
+				width: 100px;
+				height: 100px;
+				display: inline-block;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="box" style="font-size: 30px;">
+			<el-rate @value="value1" colors="orange,yellow"></el-rate>
+			<el-rate @value="value1" disabled="true"></el-rate>
+			<el-rate @value="value1" texts="a,b,c,d,e"></el-rate>
+			{{num}}
+		</div>
+		
+		<!-- 组件el-rate -->
+		<template id="el-rate">
+			<div class="el-rate">
+				<span v-for="i in 5" @mouseover="fn(i)" @mouseout="clear()" @click="st" ref="a"></span>
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			Vue.component('el-rate', {
+				template: '#el-rate',
+				props: ['disabled','texts','colors'],
+				data() {
+					return {
+						zIndex: 0,
+						circle: ['一个圆', '二个圆', '三个圆', '四个圆', '五个圆'],
+						isClick:  true,
+						bg:'red',
+						active:'blue'
+					}
+				},
+				created() {
+					if(this.disabled!=undefined){
+						this.isClick=false
+					}
+				},
+				mounted() {
+					if(this.colors!=undefined){
+						var colors=this.colors.split(',')
+						this.bg=colors[0]
+						this.active=colors[1]
+					}
+					this.$refs.a.forEach(item=>{
+						item.style.background=this.bg
+					})
+				},
+				methods: {
+					fn(e) {
+						if (this.isClick) {
+							let dom = this.$refs.a
+							for (let i = 0; i < e; i++) {
+								dom[i].style.background = this.active
+							}
+							this.zIndex = e
+							if(this.texts){
+								var texts=this.texts.split(',')
+								this.$emit('value', texts[this.zIndex - 1]);
+							}else{
+								this.$emit('value', this.circle[this.zIndex - 1]);
+							}
+						}
+					},
+					clear() {
+						if (this.isClick) {
+							this.$refs.a.forEach(item => {
+								item.style.background = this.bg
+								this.$emit('value', '')
+							})
+						}
+					},
+					st(e) {
+						if (this.isClick) {
+							for (let i = 0; i < e; i++) {
+								dom[i].style.background = this.active
+							}
+							this.isClick = false
+						}
+					}
+				}
+			})
+
+
+			
+			new Vue({
+				data: {
+					num: ''
+				},
+				methods: {
+					value1(event) {
+						this.num = event
+					}
+				}
+			}).$mount('.box')
+		</script>
+	</body>
+</html>
