@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>组件过滤器</title>
+</head>
+
+<body>
+    <div id="app">
+        <card v-for="i in 8"></card>
+        <!-- <headers></headers> -->
+    </div>
+    <template id="card">
+        <div class="card">
+            <!-- 组件里面 -->
+            <div class="card-feed">
+                <div class="avator">
+                    <img src="https://tvax4.sinaimg.cn/crop.0.0.178.178.50/6200e46aly1gdiktlx0r1j204z04zaa1.jpg?KID=imgbed,tva&Expires=1591891006&ssig=vW5rIMWsev" alt="" srcset="">
+                </div>
+                <div class="content">
+                    <div class="info">
+                        <div class="s-fr">
+                           <i class="glyphicon glyphicon-menu-down" href="#" @click="type=!type"></i>
+                           <div id="but" v-show="type">举报</div>
+                        </div>
+                        <div class="name">
+                            美国国家地理
+                        </div>
+                    </div>
+                    <!-- 组件里面的里面 -->
+                    <content-text></content-text>
+                    <card-act></card-act>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="txt">
+        <div>
+            <p class="txt">
+                <a style="cursor: pointer;">#老照片里的
+                   <em class="s-color-red">国家</em> 
+                   <em class="s-color-red">地理</em>
+                #
+                </a>
+                今年，是
+                <em class="s-color-red">美国</em>
+                <em class="s-color-red">国家</em>
+                <em class="s-color-red">地理</em>
+                成立132周年；今年，也是《
+                <em class="s-color-red">国家</em>
+                <em class="s-color-red">地理</em>
+                》简体中文版杂志——《华夏<em class="s-color-red">地理</em>
+                》落地的第15年。为了纪念这个特殊的年份，我们选出了一组《<em class="s-color-red">国家</em>
+                <em class="s-color-red">地理</em>
+                》杂志曾经刊登的老照片，它们来自黑白胶卷方兴未艾、彩色摄影无法普及的遥远年代。 ​
+            </p>
+            <div>
+                <div class="media">
+                    <ul class="m3">
+                        <li><img src="https://ww1.sinaimg.cn/orj360/6200e46agy1gdtf7p9uvzj20u0159aha.jpg" alt=""></li>
+                        <li><img src="https://ww2.sinaimg.cn/orj360/6200e46agy1gdtf7rfibdj20u00nhkhb.jpg" alt=""></li>
+                        <li><img src="https://ww2.sinaimg.cn/orj360/6200e46agy1gdtf7mdvj9j20u00jkmyu.jpg" alt=""></li>
+                        <li><img src="https://ww1.sinaimg.cn/orj360/6200e46agy1gdtf7rs3n6j20u00o34qp.jpg" alt=""></li>
+                        <li><img src="https://ww2.sinaimg.cn/orj360/6200e46agy1gdtf7pj5rlj20u016078o.jpg" alt=""></li>
+                        <li><img src="https://ww2.sinaimg.cn/orj360/6200e46agy1gdtf7nubmkj20u00iuwgs.jpg" alt=""></li>
+                        <li><img src="https://ww4.sinaimg.cn/orj360/6200e46agy1gdtf7mfq5oj20u00om77r.jpg" alt=""></li>
+                        <li><img src="https://ww4.sinaimg.cn/orj360/6200e46agy1gdtf7sakdsj20u00nh7w5.jpg" alt=""></li>
+                        <li><img src="https://ww2.sinaimg.cn/orj360/6200e46agy1gdtf7ulyg1j20u00kg192.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="from">
+                <a href="#">{{10|money}}</a>
+            </div>
+        </div>
+    </template>
+    <template id="card-act">
+        <div class="card-act">
+            <ul>
+                <li><a>收藏</a></li>
+                <li><a>转发 17</a></li>
+                <li><a>评论 41</a></li>
+                <li><a @click="sum++"><i class="glyphicon glyphicon-thumbs-up">{{sum}}</i></a></li>
+            </ul>
+        </div>
+    </template>
+    <script>
+        // 全局组件
+        Vue.component("card", {
+            template: "#card",
+            data() {
+                return {
+                    type: false
+                }
+            }
+        })
+        Vue.component('content-text', {
+            template: "#txt",
+            data() {
+                return {
+                    mas: "组件"
+                }
+            },
+            filters: {
+                "money": function(val, arg1, arg2) {
+                    return val + '小时前'
+                        // console.log(val, arg1, arg2)
+                }
+            }
+
+        })
+        Vue.component('card-act', {
+                template: "#card-act",
+                data() {
+                    return {
+                        sum: 0
+                    }
+                }
+            })
+            // new Vue({
+            //     el: '#app',
+            // })
+
+        // 挂载
+        new Vue({
+
+        }).$mount("#app")
+
+        // Vue.component("headers", {
+        //     template: "<div>123</div>",
+        //     data() {
+        //         return {
+        //             num: 0
+        //         }
+        //     }
+        // })
+    </script>
+</body>
+
+</html>
