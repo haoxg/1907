@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			.card {
+				width: 600px;
+				display: flex;
+				border: 1px solid #000;
+				padding: 10px 20px;
+				position: relative;
+				user-select: none;
+			}
+
+			.card-left {
+				width: 80px;
+			}
+
+			.card-right {
+				flex: 1;
+			}
+
+			.img img {
+				width: 350px;
+			}
+
+			.card-right span {
+				float: right;
+				cursor: pointer;
+			}
+
+			.card-right i {
+				font-style: normal;
+				color: red;
+				position: absolute;
+				top: 40px;
+				right: 10px;
+				background-color: #FFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+			<card></card>
+		</div>
+
+		<template id="card">
+			<div class="card">
+				<div class="card-left">
+					<div class="header"><img src="./img/59e10e3fly8gdi716ei4mj20u00u0wh6(1).jpg" style="padding-left: 20px;"></div>
+				</div>
+				<div class="card-right">
+					<h4 style="padding-bottom: 10px;">荔枝新闻<span @click="fn">﹀</span></h4>
+					<i v-show="isShow">举报</i>
+					<p>【#南京#
+						女子#利用航班延误骗保300多万元#：靠自己估摸成功近900次延误[吃惊]】近日，南京警方抓获一名利用航班延误实施保险诈骗的犯罪嫌疑人李某。经查，李某自2015年，用亲戚朋友的身份信息，靠自己估摸成功的近900次飞机延误，累计骗取保险理赔金高达300多万元。目前，她因涉嫌保险诈骗罪和诈骗罪
+						​ 展开全文</p>
+					<div class="img"><img src="./img/0c92cf33ly8gepcgw66kmj20u00u00wp.jpg"></div>
+					<p>{{time|timer}}</p>
+				</div>
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			Vue.component('card', {
+				template: '#card',
+				data() {
+					return {
+						time: 1591888140014,
+						isShow: false
+					}
+				},
+				methods: {
+					fn() {
+						this.isShow = !this.isShow
+					}
+				},
+				filters: {
+					'timer': function(val) {
+						let t = Date.now() - val
+						if (t / 1000 / 60 < 1) {
+							return '1分钟之内'
+						} else if (t / 1000 / 60 / 60 < 1) {
+							return parseInt(t / 1000 / 60) + '分钟之前'
+						} else if (t / 1000 / 60 / 60 / 24 < 1) {
+							return parseInt(t / 1000 / 60 / 60) + '小时之前'
+						} else if (t / 1000 / 60 / 60 / 24 / 30 < 1) {
+							return parseInt(t / 1000 / 60 / 60 / 24) + '天之前'
+						} else {
+							let tt = new Date(val)
+							return tt.toLocaleString()
+						}
+					}
+				},
+			})
+
+			var vm = new Vue({
+				el: '.content'
+			})
+		</script>
+	</body>
+</html>
