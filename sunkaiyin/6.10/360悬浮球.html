@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        #mark {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            border-radius: 50%;
+            line-height: 80px;
+            position: absolute;
+            background-color: pink;
+        }
+
+        body {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="mark" v-move:div="true">
+            悬浮球
+        </div>
+    </div>
+</body>
+<script>
+
+    Vue.directive('move', function (el, arg) {
+        console.log(el, arg);
+        var min = 0
+        var maxW = document.documentElement.clientWidth - el.clientWidth;
+        var maxH = document.documentElement.clientHeight - el.clientHeight;
+        onmousedown = function ($cmx) {
+            var objX = $cmx.offsetX
+            var objY = $cmx.offsetY
+            // console.log(objX, objY)
+            onmousemove = function ($cmx) {
+                moveX = $cmx.clientX - objX
+                moveY = $cmx.clientY - objY
+                console.log(moveX, moveY)
+
+                moveX = moveX < min ? min : moveX
+                moveY = moveY < min ? min : moveY
+
+                moveX = moveX > maxW ? maxW : moveX
+                moveY = moveY > maxH ? maxH : moveY
+
+
+                arg.modifiers.div ? "" : el.style.left = moveX + 'px'
+                arg.modifiers.div ? "" : el.style.top = moveY + 'px'
+            }
+        }
+        onmouseup = function ($cmx) {
+            onmousemove = null
+            el.style.left < 100 + 'px' ? el.style.left = -40 + 'px' : el.style.left = moveX + 'px'         //左  
+            // el.style.left > 1430 + 'px' ? el.style.left = 1500 + 'px' : el.style.left = moveX + 'px'    //右
+            el.style.top < 120 + 'px' ? el.style.top = -40 + 'px' : el.style.top = moveY + 'px'         //上
+            // el.style.top > 630 + 'px' ? el.style.top = 690 + 'px' : el.style.top = moveY + 'px'         //下
+
+        }
+
+    })
+
+
+
+    new Vue({
+        el: '#app',
+        data: {
+
+        }
+    })
+</script>
+
+</html>
