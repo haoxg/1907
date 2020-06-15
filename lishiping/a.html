@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <div id="box">
+        <input type="text" v-model="v1" /><button @click="btn">添加</button>
+        <div v-for="(i,$index) in arr" :key="i.uid">
+            <input type="checkbox" />
+            <span>{{i.title}}{{i.uid}}</span>
+        </div>
+    </div>
+</body>
+<script src="vue.js"></script>
+<script>
+    new Vue({
+        el: "#box",
+        data: {
+            v1: '',
+            arr: [{
+                    title: "no1",
+                    uid: 1,
+                    num: 878
+                },
+                {
+                    title: "no2",
+                    uid: 2,
+                    num: 78
+                },
+                {
+                    title: "no3",
+                    uid: 3,
+                    num: 88
+                },
+                {
+                    title: "no4",
+                    uid: 4,
+                    num: 880
+                }
+            ],
+            uid: 5
+        },
+        methods: {
+            btn() {
+                this.uid++
+                this.arr.unshift({
+                    title: this.v1,
+                    uid: this.uid,
+                    num: 00
+                })
+            }
+        }
+    })
+</script>
+
+</html>
