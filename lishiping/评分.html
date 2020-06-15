@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        #rate{
+            display: inline-block;
+            float: left;
+            margin: 5px;
+        }
+        #rate img{
+            width:30px;
+			height:30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <my_color></my_color> -->
+		<template id="myapp" v-for="(i,$index) in arr">
+			<div>
+			    <div id="rate">
+			        <img :src="i" @mouseenter="YR">
+			    </div>
+			</div>
+		</template>
+    </div>
+</body>
+<script>
+    Vue.component('my_color',{
+        template:`#myapp`,
+    })
+    new Vue({
+		data(){
+		    return{
+		        arr:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592148582090&di=548214b62a5a46b6368cb7f1ec334388&imgtype=0&src=http%3A%2F%2Fimg.51miz.com%2FElement%2F00%2F37%2F06%2F44%2Fb5806198_E370644_86748549.png%2521%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue%2Fformat%2Fpng','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592148582090&di=548214b62a5a46b6368cb7f1ec334388&imgtype=0&src=http%3A%2F%2Fimg.51miz.com%2FElement%2F00%2F37%2F06%2F44%2Fb5806198_E370644_86748549.png%2521%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue%2Fformat%2Fpng','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592148582090&di=548214b62a5a46b6368cb7f1ec334388&imgtype=0&src=http%3A%2F%2Fimg.51miz.com%2FElement%2F00%2F37%2F06%2F44%2Fb5806198_E370644_86748549.png%2521%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue%2Fformat%2Fpng','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592148582090&di=548214b62a5a46b6368cb7f1ec334388&imgtype=0&src=http%3A%2F%2Fimg.51miz.com%2FElement%2F00%2F37%2F06%2F44%2Fb5806198_E370644_86748549.png%2521%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue%2Fformat%2Fpng','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592148582090&di=548214b62a5a46b6368cb7f1ec334388&imgtype=0&src=http%3A%2F%2Fimg.51miz.com%2FElement%2F00%2F37%2F06%2F44%2Fb5806198_E370644_86748549.png%2521%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue%2Fformat%2Fpng'],
+		        index:0,
+		    }
+		},
+		methods: {
+		    YR(){
+		        console.log(1);	
+		    }
+		}
+	}).$mount('#app')
+</script>
+</html>
