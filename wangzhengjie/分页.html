@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #parent {
+            width: 900px;
+            height: 50px;
+            margin: 600px auto 0;
+        }
+
+        #parent>div {
+            width: 60px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            float: left;
+            margin: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .active {
+            background: royalblue;
+            color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-fy></my-fy>
+    </div>
+    <template id="container">
+        <div id="parent">
+            <div @click="index=0">首页</div>
+            <div @click="index<=0?index=0:index--">上一页</div>
+            <div v-for="(i,$index) in num" :style="{background:index==$index?'royalblue':''}" @click="index=$index">
+                {{i}} </div>
+            <div @click="index>=num-1?index=num-1:index++">下一页</div>
+            <div @click="index=num-1">尾页</div>
+        </div>
+    </template>
+</body>
+<script>
+    Vue.component('my-fy', {
+        template: '#container',
+        data() {
+            return {
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+                num: 0,
+                index: 0,
+                arr: ''
+            }
+        },
+        created() {
+            this.num = Math.ceil(this.data.length / 6)
+            this.everypage()
+        },
+        methods: {
+            everypage() {
+                this.arr = this.data.slice(this.index * 6, this.index * 6 + 6)
+            }
+        },
+    })
+    new Vue({}).$mount('#app')
+</script>
+
+</html>
