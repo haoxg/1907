@@ -33,13 +33,13 @@
 	<body>
 
 		<div class="box">
-			{{value}}
-			<el-pagination v-model="value"></el-pagination>
+			v-model值：{{value}}
+			<el-pagination v-model="value" :pages="20"></el-pagination>
 		</div>
 		<template id="pagination">
 			<div class="pagination">
 				<span @click="left">&lt;</span>
-				<span v-for="item in page" :class="item==nIndex?'active':''" @click="nIndex=item">{{item}}</span>
+				<span v-for="item in list" :class="item==nIndex?'active':''" @click="nIndex=item">{{item}}</span>
 				<span @click="right">&gt;</span>
 				<p>前往<input type="text" v-model.lazy="nIndex" />页</p>
 			</div>
@@ -52,12 +52,18 @@
 				data() {
 					return {
 						page: this.pages || 10,
-						nIndex: this.value || 1
+						nIndex: this.value || 1,
+						arr: [],
+						list: []
 					}
 				},
+				created() {
+					this.style(this.nIndex)
+				},
 				watch: {
-					'nIndex'(n,l){
-						this.$emit('input',n)
+					'nIndex'(n, l) {
+						this.style(n)
+						this.$emit('input', n)
 					}
 				},
 				methods: {
@@ -69,6 +75,29 @@
 						this.nIndex++
 						this.nIndex = this.nIndex > this.page ? this.page : this.nIndex
 					},
+					style(n) {
+						this.arr = []
+						for (let i = 0; i < this.page; i++) {
+							this.arr.push(i + 1)
+						}
+						if (this.arr.length > 8) {
+							if (n > 4 && n + 3 < this.page) {
+								this.list = [1, '...']
+								this.list.push(...this.arr.splice(n - 3, 5))
+								this.list.push('...')
+								this.list.push(this.page)
+							} else if (n + 3 == this.page) {
+								this.list = [1, '...']
+								this.list.push(...this.arr.splice(-7))
+							}else if(n<5){
+								this.list = this.arr.splice(0, 7)
+								this.list.push('...')
+								this.list.push(...this.arr.splice(-1))
+							}
+						}else{
+							this.list=this.arr
+						}
+					}
 				}
 			})
 
