@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="hang">
+        <Pagination></Pagination>
+    </div>
+    <!-- 分页 -->
+    <template id="list">
+        <div class="Pagination">
+            <button class="prev" @click='prev'>上一页</button>
+            <div><div v-for='i in 10' :key='i' :class="i == sum?'active':''" @click='list(i)' >{{i}}</div></div>
+            <button class="next" @click='next'>下一页</button>
+            <div class="input">
+                <span>前往</span><input type="number" v-model.number.lazy='sum'><span>页</span>
+            </div>
+        </div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script></script>
+</html>
