@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1882154_3ng8v7416hf.css">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #app{
+            width: 500px;
+            height: 400px;
+            background-color: aquamarine;
+            margin:50px auto;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+        .int{
+            padding: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .int>input{
+            width: 70%;
+            height: 30px;
+            outline: none;
+            text-align: 2em;
+            border: 1px solid #000;
+        }
+        ::-webkit-input-placeholder{
+            color: brown;
+            font-size: 17px;
+        }
+
+        /* 列表的鼠标移出和移出 */
+        .cont{
+            width: 100%;
+            height: 70px;
+            overflow: hidden;
+            margin-top: 100px;
+        }
+        .list{
+            width: 30%;
+            height: 70px;
+            padding: 10px;
+            background: chocolate;
+            box-sizing: border-box;
+            float: left;
+        }
+        .rateList{
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+        .item{
+            float: left;
+            height: 100%;
+            line-height:50px;
+            cursor: pointer;
+            /* margin:0 3px 0 3px; */
+            padding: 0 3px 0 3px;
+        }
+        .type{
+            width: 80px;
+            height: 70px;
+            line-height: 70px;
+            float: left;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- app 绑定 -->
+    <div id="app"v-cloak>
+        <div class="int"><input type="number" v-model.number.lazy='num' placeholder="输入数字，判断满意条件"></div>
+        <div class="cont">
+            <rate :json="json" @grade='al'></rate>
+            <p class="type">{{arr[grade]}}</p>
+        </div>
+    </div>
+    <!-- over -->
+
+    <!-- rate评分全局组件 -->
+    <template id="el_rate" >
+        <div class="list">
+            <ul class="rateList">
+                <li v-for='i in list' class="item iconfont icon-xiaoxingxing-2" @mouseenter='isType&&enter(i)' @mouseleave='leave(i)' :style="{color:isKg>=i?'yellow':''}" v-show='json.num<=5'  @click='cancel($event)'></li>
+            </ul>
+        </div>
+    </template>    
+</body>
+<script src="vue.js"></script>
+<script>
+    // 写一个自定义的取消dom对象 的mouseEnter&mouseleave 事件 让 rate评分 只可以读不可修改
+    // 改写子组件 向父组件发送事件来判断 好平的类型了 and disabled 只读 和color 颜色
+
+    // rate 修改完整版 is OK
+    Vue.component('rate',{
+        props:['json'],
+        template:'#el_rate',
+        data(){
+            return{
+                list:[1,2,3,4,5],
+                isKg:'',
+                isType:true
+            }
+        },
+        beforeUpdate(){
+            // console.log(this.json.disabled)
+            if (this.json.disabled == true) {
+                if (this.json.num != '') {
+                    for (let a = 0; a <=this.json.num; a++) {
+                        this.isKg = a
+                    }
+                    this.$emit('grade',this.isKg)
+                } else if(this.json.num == 0){
+                    this.isKg = ''
+                
+                }
+            }
+        },
+        methods:{
+            enter(i){
+                this.isType = true
+                console.log(this.json.disabled)
+                for (let a = 0; a <=i; a++) {
+                    this.json.num = a
+                    this.isKg = a
+                }
+                this.$emit('grade',this.isKg)
+            },
+            leave(i){
+                this.isType = true
+                if (this.isKg == 1 || this.isKg == 5) {
+                    this.isKg = ''
+                    this.json.num = ''
+                }
+                this.$emit('grade',this.isKg)
+            },
+            cancel(event){
+                this.isType = false
+            }
+        }
+    })
+
+    new Vue({
+        data:{
+            num:'',
+            arr:['极差','失望','一般','满意','惊喜'],
+            json:{num:'',disabled:''},
+            grade:''
+        },
+        methods:{
+            al(event){
+                // console.log(event)
+                // if (this.json.num != '') {
+                    this.grade = event-1
+                // } 
+            }
+        },
+        updated(){
+            if (this.num !='') {
+                this.$set(this.json,'num',this.num)
+                this.$set(this.json,'disabled',true)
+            } else {
+                this.$set(this.json,'num','')
+                this.$set(this.json,'disabled',false)
+            }
+        }
+    }).$mount('#app')
+</script>
+</html>
