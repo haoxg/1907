@@ -33,7 +33,8 @@
 	<body>
 
 		<div class="box">
-			<el-pagination :pages="8"></el-pagination>
+			{{value}}
+			<el-pagination v-model="value"></el-pagination>
 		</div>
 		<template id="pagination">
 			<div class="pagination">
@@ -47,27 +48,35 @@
 		<script type="text/javascript">
 			Vue.component('el-pagination', {
 				template: '#pagination',
-				props: ['pages'],
+				props: ['value', 'pages'],
 				data() {
 					return {
 						page: this.pages || 10,
-						nIndex: 1
+						nIndex: this.value || 1
 					}
 				},
-				methods:{
-					left(){
+				watch: {
+					'nIndex'(n,l){
+						this.$emit('input',n)
+					}
+				},
+				methods: {
+					left() {
 						this.nIndex--
-						this.nIndex=this.nIndex<1?1:this.nIndex
+						this.nIndex = this.nIndex < 1 ? 1 : this.nIndex
 					},
-					right(){
+					right() {
 						this.nIndex++
-						this.nIndex=this.nIndex>this.page?this.page:this.nIndex
+						this.nIndex = this.nIndex > this.page ? this.page : this.nIndex
 					},
 				}
 			})
 
 			new Vue({
-				el: '.box'
+				el: '.box',
+				data: {
+					value: 1
+				}
 			})
 		</script>
 	</body>
