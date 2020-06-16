@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #box {
+            width: 800px;
+            margin: 80px;
+        }
+        
+        .el {
+            width: 800px;
+        }
+        
+        .header,
+        .footer {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+        }
+        
+        .left {
+            background-color: #D3DCE6;
+            color: #333;
+            text-align: center;
+            line-height: 320px;
+            width: 200px;
+            float: left;
+        }
+        
+        .content {
+            background-color: #E9EEF3;
+            color: #333;
+            text-align: center;
+            line-height: 160px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <el-container>
+            <el-aside width="200px">Aside</el-aside>
+            <el-container>
+                <el-header>Header</el-header>
+                <el-main>Main</el-main>
+                <el-footer>Footer</el-footer>
+            </el-container>
+        </el-container>
+    </div>
+    <template id="el">
+        <div class="el">
+            <slot></slot>
+        </div>
+    </template>
+    <template id="left">
+        <div  class="left">
+            <slot></slot>
+        </div>
+    </template>
+    <template id="header">
+        <div  class="header">
+            <slot></slot>
+        </div>
+    </template>
+    <template id="content">
+        <div  class="content">
+            <slot></slot>
+        </div>
+    </template>
+    <template id="footer">
+        <div  class="footer">
+            <slot></slot>
+        </div>
+    </template>
+    <script>
+        Vue.component('el-container', {
+            template: "#el"
+        })
+        Vue.component("el-aside", {
+            template: "#left"
+        })
+        Vue.component("el-header", {
+            template: "#header"
+        })
+        Vue.component("el-main", {
+            template: "#content"
+        })
+        Vue.component("el-footer", {
+            template: "#footer"
+        })
+        new Vue({
+            el: '#box',
+        })
+    </script>
+</body>
+
+</html>
