@@ -54,50 +54,45 @@
 
     <body>
         <div id="box" v-cloak>
-            <el-container></el-container>
-            <!-- <el-container>
-                    <el-aside :kuan="200">Aside</el-aside>
-                    <el-container>
-                        <el-header>Header</el-header>
-                        <el-main>Main</el-main>
-                        <el-footer>Footer</el-footer>
-                    </el-container>
-                </el-container>-->
-        </div>
-        <!-- 容器组件 -->
-        <template id="container">
-            <section class="el-container">
+            <!-- <el-container></el-container> -->
+            <el-container>
                 <el-aside :kuan="200">Aside</el-aside>
-                <section class="el-container is-vertical">
+                <el-container style="flex-direction: column">
                     <el-header>Header</el-header>
                     <el-main>Main</el-main>
                     <el-footer>Footer</el-footer>
-                </section>
-            </section>
+                </el-container>
+            </el-container>
+        </div>
+        <!-- 容器组件 -->
+        <template id="container">
+            <div class="el-container">
+                <slot></slot>
+            </div>
         </template>
         <!-- 侧边栏组件 -->
         <template id="aside">
-            <aside class="el-aside" :style="{width:kuan+'px' || '200px'}">
+            <div class="el-aside" :style="{width:kuan+'px' || '200px'}">
                 <slot></slot>
-            </aside>
+            </div>
         </template>
         <!-- 头部组件 -->
         <template id="header">
-            <header class="el-header">
+            <div class="el-header">
                 <slot></slot>
-            </header>
+            </div>
         </template>
         <!-- main组件 -->
         <template id="main">
-            <main class="el-main">
+            <div class="el-main">
                 <slot></slot>
-            </main>
+            </div>
         </template>
         <!-- footer组件 -->
         <template id="footer">
-            <footer class="el-footer">
+            <div class="el-footer">
                 <slot></slot>
-            </footer>
+            </div>
         </template>
     </body>
     <script src="vue.js"></script>
