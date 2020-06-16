@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+	</head>
+	<body>
+		
+		<div class="container">
+			<div class="box" v-drap.top>
+				<div class="content"></div>
+			</div>
+		</div>
+		
+		
+		<script type="text/javascript">
+			// Vue.directive('drap',function(){})
+			new Vue({
+				el: '.box',
+				directives: {
+					'drap': function(el, arg) {
+						console.log(arg.modifiers)
+						el.onmousedown = function(e) {
+							el.style.transition=''
+							if(el.offsetTop==0){
+								el.style.top=0
+							}
+							el.className='box'
+							let evt = event || e
+							let downX = evt.offsetX
+							let downY = evt.offsetY
+							onmousemove = function(e) {
+								let evt = event || e
+								el.style.left = evt.clientX - downX + 'px'
+								el.style.top = evt.clientY - downY + 'px'
+							}
+						}
+						onmouseup=function(){
+							onmousemove=null
+						}
+						if(arg.modifiers.top){
+							onmouseup=function(){
+								onmousemove=null
+								if(el.offsetTop<=0){
+									el.style.transition='.5s'
+									el.style.top='-490px'
+									setTimeout(function(){
+										el.className='box active'
+									},500)
+								}
+								
+							}
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
