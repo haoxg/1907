@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/emojify-emoticons.css">
+    <script src="js/emojify.js"></script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        #app{
+            width: 98vw;
+            height: auto;
+        }
+        .cont{
+            padding: 16px;
+            height: auto;
+            width: auto;
+            overflow: hidden;
+            background: #fff;
+            position: relative;
+            margin-top: 10px;
+        }
+        .img{
+            float: left;
+            display: inline;
+            width: 50px;
+            padding: 3px 0 6px;
+            margin-right: 10px;
+        }
+        .img>img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .title{
+            margin-top: 15px;
+        }
+        .cont>p{
+            padding:15px 10px 0 10px;
+        }
+        .imgs{
+            padding: 10px;
+        }
+        .imgs>div{
+            width: 120px;
+            height: 120px;
+            float: left;
+            margin: 5px;
+        }
+        .imgs>div>img{
+            width: 100%;
+            height: 100%;
+            display:block;
+        }
+        .time{
+            margin: 10px 10px 0 10px;
+            padding: 10px 10px 0 10px;
+            line-height: 40px;
+        }
+    </style>
+</head>
+<body style="background-size: 100% 100%;">
+    <div id="app" v-cloak>
+        <!-- {{num | o('%') | o}} -->
+        <div class="plc_main" style="margin: auto; float: none;height: auto;">
+            <!--留言板-->
+            <div class="send_weibo" style="margin: auto; float: none;">
+
+                <!-- 包住留言的大盒子 -->
+                <div class="leave">
+                    <p>
+                        有什么新鲜事想告诉大家?
+                        <a href="javascript:">珠峰上的“中国梯”，曾帮上千人登上世界之巅>></a>
+                        <a href="javascript:">热门微博</a>
+                    </p>
+                    <textarea name="" id="textarea" cols="88" rows="5" v-model='val' ref='val'></textarea>
+                    <div class="issue">
+                        <ul class="icon">
+                            <li v-for='(i,$index) in iconList' :key='$index' ref='one'><span class="iconfont" :class="'icon-'+i.icon"></span><a href="javascript:">{{i.title}}</a></li>
+                        </ul>
+                        <!-- 小图标 -->
+                        <div id="main" v-show='isKg' ref='op'>
+                            <a href="javascript:" @click='isKg=false'>×</a>
+                            <p>:bowtie:</p><p>:smile:</p><p>:laughing:</p><p>:blush:</p><p>:smiley:</p><p>:relaxed:</p><p>:smirk:</p><p>:heart_eyes:</p>
+                            <p>:kissing_heart:</p><p>:kissing_closed_eyes:</p><p>:flushed:</p><p>:relieved:</p><p>:satisfied:</p><p>:grin:</p><p>:wink:</p>
+                            <p>:stuck_out_tongue_winking_eye:</p><p>:stuck_out_tongue_closed_eyes:</p><p>:grinning:</p><p> :kissing:</p><p>:kissing_smiling_eyes:</p>
+                            <p>:stuck_out_tongue:</p><p>:sleeping:</p><p>:worried:</p><p>:frowning:</p><p>:anguished:</p><p>:open_mouth:</p><p>:grimacing:</p><p>:confused:</p>
+                            <p>:hushed:</p><p>:expressionless:</p><p>:unamused:</p><p>:sweat_smile:</p><p>:sweat:</p><p>:weary:</p><p>:pensive:</p><p>:disappointed:</p>
+                            <p>:confounded:</p><p>:fearful:</p><p>:cold_sweat:</p><p>:persevere:</p><p>:cry:</p><p>:sob:</p><p>:joy:</p><p>:astonished:</p><p>:scream:</p>
+                            <p>:neckbeard:</p><p>:tired_face:</p><p>:angry:</p><p>:rage:</p><p>:sleepy:</p><p>:yum:</p><p>:mask:</p><p>:sunglasses:</p><p>:dizzy_face:</p>
+                            <p>:imp:</p><p>:triumph:</p><p>:smiling_imp:</p><p>:neutral_face:</p><p>:no_mouth:</p><p>:innocent:</p><p>:alien:</p><p>:yellow_heart:</p>
+                            <p>:blue_heart:</p><p>:purple_heart:</p><p>:heart:</p><p>:green_heart:</p><p>:broken_heart:</p><p>:heartbeat:</p><p>:heartpulse:</p>
+                            <p>:two_hearts:</p><p>:revolving_hearts:</p><p>:cupid:</p><p>:sparkling_heart:</p><p>:sparkles:</p><p>:star:</p><p>:star2:</p><p>:dizzy:</p>
+                            <p>:boom:</p><p>:collision:</p><p>:anger:</p><p>:exclamation:</p><p>:question:</p>
+                            <p>:grey_exclamation:</p><p>:grey_question:</p><p>:zzz:</p><p>:dash:</p><p>:sweat_drops:</p><p>:notes:</p><p>:musical_note:</p><p>:fire:</p>
+                            <p>:hankey:</p><p>:poop:</p><p>:shit:</p><p>:+1:</p><p>:thumbsup:</p><p>:-1:</p><p>:thumbsdown:</p><p>:ok_hand:</p><p>:punch:</p><p>:facepunch:</p><p>:fist:</p>         
+                            <p>:v:</p><p>:wave:</p><p>:hand:</p><p>:open_hands:</p><p>:point_up:</p><p>:point_down:</p><p>:point_left:</p><p>:point_right:</p><p>:raised_hands:</p>
+                            <p>:pray:</p><p>:point_up_2:</p><p>:clap:</p><p>:muscle:</p><p>:metal:</p><p>:walking:</p><p>:runner:</p><p>:running:</p><p>:couple:</p><p>:family:</p>
+                            <p>:two_men_holding_hands:</p><p>:two_women_holding_hands:</p><p>:dancer:</p><p>:dancers:</p><p>:ok_woman:</p><p>:no_good:</p><p>:information_desk_person:</p>
+                            <p>:raised_hand:</p><p>:bride_with_veil:</p><p>:person_with_pouting_face:</p><p>:person_frowning:</p><p>:bow:</p><p>:couplekiss:</p><p>:couple_with_heart:</p>
+                            <p>:massage:</p><p>:haircut:</p><p>:nail_care:</p><p>:boy:</p><p>:girl:</p>
+                            <p>:woman:</p><p>:man:</p><p>:baby:</p><p>:older_woman:</p><p>:older_man:</p><p>:person_with_blond_hair:</p><p>:man_with_gua_pi_mao:</p><p>:man_with_turban:</p>
+                            <p>:construction_worker:</p><p>:cop:</p><p>:angel:</p><p>:princess:</p><p>:smiley_cat:</p><p>:smile_cat:</p><p>:heart_eyes_cat:</p><p>:kissing_cat:</p>
+                            <p>:smirk_cat:</p><p>:scream_cat:</p><p>:crying_cat_face:</p>
+                            <p>:joy_cat:</p><p>:pouting_cat:</p><p>:japanese_ogre:</p><p>:japanese_goblin:</p><p>:see_no_evil:</p><p>:hear_no_evil:</p><p>:speak_no_evil:</p>
+                            <p>:guardsman:</p><p>:skull:</p><p>:feet:</p><p>:lips:</p><p>:kiss:</p><p>:droplet:</p><p>:ear:</p><p>:eyes:</p><p>:nose:</p><p>:tongue:</p>
+                            <p>:love_letter:</p><p>:bust_in_silhouette:</p>
+                            <p>:busts_in_silhouette:</p><p>:speech_balloon:</p><p>:thought_balloon:</p><p>:feelsgood:</p><p>:finnadie:</p><p>:goberserk:</p><p>:godmode:</p>
+                            <p>:hurtrealbad:</p><p>:rage1:</p><p>:rage2:</p><p>:rage3:</p><p>:rage4:</p><p>:suspect:</p><p>:trollface:</p>
+                        </div>
+                        <a href="javascript:">公开<span class="iconfont">&#xe603;</span></a>
+                        <input type="button" class="but" value="发布" style="cursor: pointer;" @click='creat'>
+                        <!-- 点击发布和调用组件的没有连在一起，待优化，用到了 父子组件的传值，未能解决 -->
+                    </div>
+                </div>
+
+                <!-- 留言下面的导航条 -->
+                <ul class="leave_nav">
+                    <li v-for='(i,$index) in navList' :key='$index' @click='thisNav=i'><a href="javascript:" >{{i}}</a><span class="s2"><i :class="i==thisNav?'active':''" ></i></span></li>
+                    <input type="text" placeholder="搜索我关注人的微博">
+                    <span class="iconfont">&#xe61b;</span>
+                </ul>
+
+                <!-- 追加留言的盒子 -->
+                <div class="add_leave" ref='cread'>
+                    <div class="jiazai" v-if='show'>数据正在加载，请稍后</div>
+                    <card v-for='i in 3'></card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 整个留言列表组件 -->
+    <template id="card">
+        <div class="cont">
+            <div class="img"><img src="./images/0a1.jpg" alt=""></div>
+            <div class="title">公益</div>
+            <p>巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉一大堆一大堆一大堆一大堆一大堆</p>
+            <a href="javascript:" style="position: absolute;right: 15px;top: 5px;" @click='isSHow = !isSHow'>↓</a>
+            <p class="mas" style="background:#fff; position: absolute; top: 25px; right: 0px;z-index: 99;" v-show='isSHow'>点击举报</p>
+                <imgs class="imgs"></imgs>
+                <!-- <div v-for='i in 4'><img :src=`img/${i}.jpeg` alt=""></div> 没拆开写的写法-->
+            <shijian></shijian>
+        </div>
+    </template> 
+    <!-- imgs 子组件 -->
+    <template id="imgs" >
+        <div>
+            <div  v-for='i in 4'><img :src=`img/${i}.jpeg` alt=""></div>
+        </div>
+    </template>
+    <!-- 时间子组件 -->
+    <template id="shijian" >
+        <div class="time">{{time | times}}</div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    // <!-- 总组件 -->
+    Vue.component('card',{
+        template:'#card',
+        data(){
+            return {
+                text:'',
+                isSHow:false,
+            }
+        }
+    })
+    // imgs 子组件
+    Vue.component('imgs',{
+        template:'#imgs',
+    })
+    // 时间time 组件
+    var Date = new Date()
+    Vue.component('shijian',{
+        template:'#shijian',
+        data(){
+            return {
+                time:''
+            }
+        },
+        beforeMount(){
+            // 我是子获取时间的时候 给时间改了一下
+            this.time = (Date.getFullYear()+2)+'-'+(Date.getMonth())+'-'+(Date.getDate())+'-'+(Date.getHours())+'-'+(Date.getMinutes()-5)+'-'+(Date.getSeconds()+1)
+        },
+        filters:{
+            'times':(val)=>{
+                //这里写的判断性能不是很好，等待优化
+                var arr = val.split('-')
+                if (Number(arr[5]) == Date.getSeconds() || Number(arr[5]) < Date.getSeconds() && Number(arr[5]) < (Date.getSeconds()+60)) {
+                    return '刚刚'         
+                } else if(Number(arr[4]) < (Date.getMinutes())){
+                    return '十分钟前'
+                } else if(Number(arr[3]) < (Date.getHours())){
+                    return Date.getHours()-Number(arr[3])+'小时之前,十二小时之内'
+                } else if(Number(arr[2]) < (Date.getDate())){
+                    return Date.getDate()-Number(arr[2])+'天前'
+                } else if(Number(arr[1]) < (Date.getMonth())){
+                    return (Date.getMonth()-Number(arr[1]))*4+'周前'
+                } else if(Number(arr[0]) == (Date.getFullYear())){
+                    return '今年前'
+                } else if(Number(arr[0]) < (Date.getFullYear())){
+                    return  (Date.getFullYear())- Number(arr[0])+'年前     ' +val
+                } 
+            }
+        }
+    })
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            iconList:[
+                {icon:'biaoqing',title:'表情'},
+                {icon:'tupian-copy',title:'图片'},
+                {icon:'shipin1',title:'视频'},
+                {icon:'jinghao',title:'话题'},
+                {icon:'shandiandianliang',title:'头条文章'},
+                {icon:'diandian',title:''}
+            ],
+            navList:['我的','原创','图片','视频','音乐','文章'],
+            thisNav:'我的',
+            isKg:false,
+            val:'',
+            show:true
+        },
+        methods:{
+            creat(){
+                if (this.val == '') {
+                    alert('还未输入内容，内容不能为空')
+                } else {
+                    this.show = false
+                }
+            }
+        },
+        mounted(){
+            emojify.setConfig({emojify_tag_type:'div'});
+            emojify.run();
+            this.$refs.one[0].onclick = ()=>{
+                this.isKg = !this.isKg
+            }
+            this.$refs.op.childNodes.forEach((item,index)=>{
+                item.onclick = ()=>{
+                    if (item == this.$refs.op.childNodes[0]) {
+                        this.isKg = false
+                    } else {
+                        this.val+=item.children[0].title
+                    }
+                }
+            })
+        }
+    })
+</script>
+</html>

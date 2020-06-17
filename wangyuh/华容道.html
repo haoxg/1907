@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			.box {
+				position: relative;
+			}
+
+			.box div {
+				width: 50px;
+				height: 50px;
+				border: 1px solid #000;
+				text-align: center;
+				line-height: 50px;
+				font-size: 28px;
+				position: absolute;
+				cursor: pointer;
+				user-select: none;
+			}
+
+			.box ul li {
+				display: inline-block;
+				margin: 0 30px 30px 0;
+			}
+
+			.box ul li button {
+				font-size: 20px;
+				padding: 5px 10px;
+			}
+
+			.main {
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul v-once>
+				<li v-for="i,index in qSize"><button type="button" @click="tab(index)">{{Math.sqrt(i)}}*{{Math.sqrt(i)}}华容道</button></li>
+			</ul>
+			<div class="main">
+				<div v-for="i,index in arr" ref="content" @click="move(i,index)">{{i}}</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			new Vue({
+				el: '.box',
+				data: {
+					qSize:[9,16,25,36],//棋盘大小
+					arr: [],//棋盘内容
+					row: 3,
+					ok: [],//通关数组
+				},
+				created() {
+					//初始化节目数据
+					this.fuzhi(this.qSize[0])
+				},
+				methods: {
+					//数组赋值
+					fuzhi(num){
+						this.arr=[]
+						for(let i=0; i<num; i++){
+							if(i!=num-1){
+								this.arr.push(i+1)
+								this.ok.push(i+1)
+							}else{
+								this.arr.push('')
+								this.ok.push('')
+							}
+						}
+						this.fn()
+					},
+					//生成随机数字 进行页面布局
+					fn() {
+						this.arr.sort(function() {
+							return Math.random() - Math.random()
+						})
+						this.$nextTick(() => {
+							let dom = this.$refs.content
+							for (let i = 0; i < dom.length; i++) {
+								dom[i].style.left = i % this.row * 50 + 'px'
+								dom[i].style.top = parseInt(i / this.row) * 50 + 'px'
+							}
+						})
+					},
+					//切换难度
+					tab(index) {
+						this.row = Math.sqrt(this.qSize[index])
+						this.fuzhi(this.qSize[index])
+					},
+					//点击数字变更数组
+					move(num, index) {
+						//点击非空数字
+						if (num != '') {
+							//查找空格下标
+							let i = this.arr.findIndex(res => {
+								return res == ''
+							})
+							//进行移动判断
+							if (index + 1 == i && index % this.row + 1 < this.row || index - 1 == i && this.row - 1 >= 0 || index + this.row == i ||
+								index - this.row == i) {
+								this.arr.splice(index, 1, '')
+								this.arr.splice(i, 1, num)
+								this.$nextTick(()=>{
+									if(this.arr.join('')==this.ok.join('')){
+										alert('通关')
+									}
+								})
+							}
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

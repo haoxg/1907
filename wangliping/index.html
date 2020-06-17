@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			el-container {
+				width: 800px;
+				height: 400px;
+				display: flex;
+				flex-direction: row;
+				flex: 1;float: left;
+				flex-basis: auto;
+				box-sizing: border-box;
+				min-width: 0;
+				margin-bottom: 10px;
+			}
+			
+			el-aside {
+				width: 200px;
+				height: 400px;
+				background-color: #d3dce6;
+				text-align: center;
+				line-height: 200px;
+				color: #333;
+			}
+			.el-container{
+				width: 600px;
+				height: 400px;
+				float: left;
+				display: flex;
+				flex-direction: column-reverse;
+			}
+			el-header {
+				flex: 1;
+				float: left;
+				background-color: #b3c0d1;
+				color: #333;
+				line-height: 60px;
+			}
+			
+			
+			el-header {
+				padding: 0 20px;
+			}
+			
+			el-main {
+				float: left;
+				background-color: #e9eef3;
+				color: #333;
+				text-align: center;
+				line-height: 160px;
+			}
+			
+			el-footer,
+			el-main {
+				box-sizing: border-box;
+			}
+			
+			el-main {
+				display: block;
+				flex: 2;
+				flex-basis: auto;
+				padding: 20px;
+			}
+			
+			el-aside,
+			el-main {
+				overflow: auto;
+			}
+			
+			el-footer,
+			el-header {
+				float: left;
+				background-color: #b3c0d1;
+				color: #333;
+				line-height: 60px;
+			}
+			
+			el-footer {
+				flex: 1;
+				float: left;
+				padding: 0 20px;
+				flex-shrink: 0;
+			}
+			
+			el-footer,
+			el-main {
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box">
+				<my-container></my-container>
+				<my-container></my-container>
+		</div>
+
+		<!--组件模板-->
+		<template id="app">
+			<el-container>
+				<el-aside >Aside</el-aside>
+				<div class="el-container">
+					<el-header>Header</el-header>
+					<el-main>Main</el-main>
+					<el-footer>Footer</el-footer>
+				</div>
+			</el-container>
+		</template>
+	</body>
+	<script src="vue.js"></script>
+	<script>
+		Vue.component('my-container', {
+			template: '#app',
+			data(){
+				return{
+					
+					
+				}
+			}
+		})
+		new Vue({}).$mount('#box')
+	</script>
+
+</html>

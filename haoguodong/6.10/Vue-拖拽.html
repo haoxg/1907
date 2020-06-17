@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+        #box{
+            width: 100vw;
+            height: 100vh;
+            background: #50e3c2;
+            position: relative;
+            overflow: hidden;
+        }
+        .item{
+            width: 200px;
+            height: 400px;
+            background: #4a90e2;
+            position: absolute;
+            cursor: pointer;
+            text-align: center;
+            line-height: 400px;
+            font-size: 30px;
+            top: 0;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+       <div class="item" v-drap.right='iskg' @mouseover.stop='over' @mouseout.stop='out' ref='div' :style="{top:isshow==true?0+'px':''}">点击可拖拽</div>
+       <!--   -->
+    </div>
+</body>
+<script src="vue.js"></script>
+<script>
+    new Vue({
+        el:'#box',
+        data:{
+            iskg:false,
+            isshow:false,
+            isnum:-435,
+            isTime:null,
+            left:'',
+            top:''
+        },
+        created(){
+            // onmousemove = (e)=>{
+            //     var div = this.$refs.div
+            //     let evt = e || event
+            //     clearInterval(this.isTime)
+            //     this.isnum=-435
+            //     if (evt.clientY < evt.path[4].screenTop+10 ) {
+            //         this.isshow = true
+            //         this.isTime = setInterval(()=>{
+            //             if (this.isnum<0) {
+            //                 this.isnum+=15
+            //                 div.style.top = this.isnum+'px'
+            //             } else{
+            //                 clearInterval(this.isTime)
+            //             }
+            //         },10)
+            //     } else{
+            //         this.isshow = false
+            //     }
+            //     if (evt.clientX == this.left) {
+            //         console.log(1)
+            //     }
+            //     evt.stopPropagation()
+            // }
+        },
+        methods:{
+            over(){
+                this.iskg=true
+                this.isshow = true
+            },
+            out(){
+                this.iskg=false
+                this.isshow = false
+            }
+        },
+        directives:{
+            'drap':function(el,rag){
+               if (rag.value) {
+                    var min = 0,maxX='',maxY = '',kg=false,time=null,num=1;
+                    el.onmousedown = function(e){
+                        kg=false
+                        el.style.height = 400+'px'
+                        let evt = e || event;
+                        maxY = evt.path[1].clientHeight
+                        maxX = evt.path[1].clientWidth
+                        let domX = evt.offsetX;
+                        let domY = evt.offsetY;
+                        evt.stopPropagation()
+                       evt.path[3].onmousemove = function(e){
+                            let evt = e || event;
+                               let moveX = evt.clientX - domX;
+                               let moveY = evt.clientY - domY;
+
+                               moveX = moveX < min?min:moveX;
+                               moveX = moveX > maxX-200?maxX-200:moveX;
+                               moveY = moveY < min?min:moveY;
+                            //    左
+                            if (rag.modifiers.left) {
+                                if (moveX == min) {
+                                    el.style.height = 100+'vh'
+                                    el.style.top = 0 + 'px';
+                                }
+                            }
+                            //  //    右
+                             if (rag.modifiers.right) {
+                                if (moveX == maxX-200) {
+                                    el.style.height = 100+'vh'
+                                    el.style.top = 0 + 'px';
+                                }
+                            }
+                            //    上
+                            if (rag.modifiers.top) {
+                                if (moveY <= min) {
+                                    kg = true
+                                }
+                            }
+                            el.style.left = moveX + 'px';
+                            el.style.top = moveY + 'px';
+                            // return this.left = moveX
+                        }
+                    }
+                    onmouseup = (e)=>{
+                        console.log(kg)
+                        let evt = e || event
+                        evt.path[3].onmousemove = null
+                        if (kg==true) {
+                            time = setInterval(()=>{
+                                if (num>-360) {
+                                    num-=15
+                                    el.style.top = num + 'px';
+                                } else{
+                                    clearInterval(time)
+                                }
+                            },10)
+                            kg = false
+                        }
+                        evt.stopPropagation()
+                    }
+               }else{
+                    console.log('')
+               }
+            }
+        }
+    })
+</script>
+</html>
