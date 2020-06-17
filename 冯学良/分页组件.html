@@ -33,21 +33,13 @@
 	<body>
 
 		<div class="box">
-<<<<<<< HEAD
-			<el-pagination :pages="8"></el-pagination>
-=======
 			v-model值：{{value}}
 			<el-pagination v-model="value" :pages="20"></el-pagination>
->>>>>>> 1eca1320900c3fb0bfcb36523ebe305a14f963a3
 		</div>
 		<template id="pagination">
 			<div class="pagination">
 				<span @click="left">&lt;</span>
-<<<<<<< HEAD
-				<span v-for="item in page" :class="item==nIndex?'active':''" @click="nIndex=item">{{item}}</span>
-=======
 				<span v-for="item in list" :class="item==nIndex?'active':''" @click="nIndex=item">{{item}}</span>
->>>>>>> 1eca1320900c3fb0bfcb36523ebe305a14f963a3
 				<span @click="right">&gt;</span>
 				<p>前往<input type="text" v-model.lazy="nIndex" />页</p>
 			</div>
@@ -55,89 +47,65 @@
 
 		<script type="text/javascript">
 			Vue.component('el-pagination', {
-				template: '#pagination',
-<<<<<<< HEAD
-				props: ['pages'],
-				data() {
-					return {
-						page: this.pages || 10,
-						nIndex: 1
-					}
-				},
-				methods:{
-					left(){
-						this.nIndex--
-						this.nIndex=this.nIndex<1?1:this.nIndex
-					},
-					right(){
-						this.nIndex++
-						this.nIndex=this.nIndex>this.page?this.page:this.nIndex
-					},
-=======
-				props: ['value', 'pages'],
-				data() {
-					return {
-						page: this.pages || 10,
-						nIndex: this.value || 1,
-						arr: [],
-						list: []
-					}
-				},
-				created() {
-					this.style(this.nIndex)
-				},
-				watch: {
-					'nIndex'(n, l) {
-						this.style(n)
-						this.$emit('input', n)
-					}
-				},
-				methods: {
-					left() {
-						this.nIndex--
-						this.nIndex = this.nIndex < 1 ? 1 : this.nIndex
-					},
-					right() {
-						this.nIndex++
-						this.nIndex = this.nIndex > this.page ? this.page : this.nIndex
-					},
-					style(n) {
-						this.arr = []
-						for (let i = 0; i < this.page; i++) {
-							this.arr.push(i + 1)
-						}
-						if (this.arr.length > 8) {
-							if (n > 4 && n + 3 < this.page) {
-								this.list = [1, '...']
-								this.list.push(...this.arr.splice(n - 3, 5))
-								this.list.push('...')
-								this.list.push(this.page)
-							} else if (n + 3 == this.page) {
-								this.list = [1, '...']
-								this.list.push(...this.arr.splice(-7))
-							}else if(n<5){
-								this.list = this.arr.splice(0, 7)
-								this.list.push('...')
-								this.list.push(...this.arr.splice(-1))
+						template: '#pagination',
+							props: ['value', 'pages'],
+							data() {
+								return {
+									page: this.pages || 10,
+									nIndex: this.value || 1,
+									list: []
+								}
+							},
+							created() {
+								this.style(this.nIndex)
+							},
+							watch: {
+								'nIndex'(n, l) {
+									this.style(n)
+									this.$emit('input', n)
+								}
+							},
+							methods: {
+								left() {
+									this.nIndex--
+									this.nIndex = this.nIndex < 1 ? 1 : this.nIndex
+								},
+								right() {
+									this.nIndex++
+									this.nIndex = this.nIndex > this.page ? this.page : this.nIndex
+								},
+								style(n) {
+									var arr = []
+									for (let i = 0; i < this.page; i++) {
+										arr.push(i + 1)
+									}
+									if (arr.length > 8) {
+										if (n > 4 && n + 3 < this.page) {
+											this.list = [1, '...']
+											this.list.push(...arr.splice(n - 3, 5))
+											this.list.push('...')
+											this.list.push(this.page)
+										} else if (n + 3 >= this.page) {
+											this.list = [1, '...']
+											this.list.push(...arr.splice(-7))
+										} else if (n < 5 ) {
+											this.list = arr.splice(0, 7)
+											this.list.push('...')
+											this.list.push(...arr.splice(-1))
+										}
+									} else {
+										this.list = arr
+									}
+								}
 							}
-						}else{
-							this.list=this.arr
-						}
-					}
->>>>>>> 1eca1320900c3fb0bfcb36523ebe305a14f963a3
-				}
-			})
+						})
 
-			new Vue({
-<<<<<<< HEAD
-				el: '.box'
-=======
-				el: '.box',
-				data: {
-					value: 1
-				}
->>>>>>> 1eca1320900c3fb0bfcb36523ebe305a14f963a3
-			})
+					new Vue({
+						el: '.box',
+						data: {
+							value: 1
+						}
+					})
 		</script>
 	</body>
 </html>
