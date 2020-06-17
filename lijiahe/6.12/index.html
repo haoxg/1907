@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
+		.list{
+			margin:50px 50px 0 20px;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			border: 3px solid rgb(198, 209, 222);
+		   	float: left;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<rate v-for='i in 5'></rate>
+		<div>
+			<span></span>
+		</div>
+	</div>
+	<!-- 组件模板 -->
+	<template id="app">
+			<div class="list"  @mousemove='yr()' @click='dj()'></div>
+	</template>
+</body>
+<script type="text/javascript" src="../vue.js"></script>
+<script type="text/javascript">
+	// 自定义全局组件
+	Vue.component('rate',{
+		template:'#app',
+		data(){
+			return {
+				pf:0,
+			}
+		},
+		methods:{
+			yr(){
+				// console.log(this._uid)
+				this.$el.style.background = 'red',
+				this.pf=this._uid
+				},
+			di(){
+				this.$el.style.background = 'red'
+			}
+		}
+	})
+	// 自定义事件
+	new Vue({
+		
+	}).$mount('#box')
+</script>
+</html>

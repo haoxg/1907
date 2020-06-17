@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .mybox div{
+            list-style: none;
+            display: inline-block;
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            user-select: none;
+        }
+        
+        .mybox div.active {
+            color: red;
+        }
+		input{
+			width: 40px;
+		}
+    </style>
+</head>
+
+<body>
+    <div id="app">
+		<myapp v-model="value"></myapp>
+    </div>
+	<template id="box">
+		<div class="mybox">
+		    <div @click="first">首页</div>
+		    <div @click="perv">上一页</div>
+		    <div v-for="(i,index) in maxPageSize" :class="{active:firstPage+index==currentPage}" @click="jump(firstPage+index)">{{firstPage+index}}</div>
+		    <div @click="next">下一页</div>
+		    <div @click="last">尾页</div>
+			前往<input type="text" v-model="val">页
+		</div>
+	</template>
+</body>
+<script>
+	Vue.component('myapp',{
+		template:'#box',
+		 model:{
+		     prop: 'abc',
+		     event: 'ddd'
+		 },
+		 props:['abc'],
+		data(){
+			return{
+				pageSize: 9,
+				pages: 30,
+				currentPage: 1,
+			}
+		},
+		computed: {
+		    maxPageSize() {
+		        return this.pages < this.pageSize ? this.pages : this.pageSize;
+		    },
+		    firstPage() {
+		        if (this.currentPage <= Math.floor(this.pageSize / 2)) {
+		            return 1;
+		        } else if (this.currentPage >= this.pages - Math.floor(this.pageSize / 2)) {
+		            return this.pages - this.pageSize + 1;
+		        } else {
+		            return this.currentPage - Math.floor(this.pageSize / 2);
+		        }
+		    },
+			val:{//computed修改的前提是 必须实现set
+			    get(){
+			        return this.abc
+			    },
+			    set(v){
+			       this.$emit('ddd',v) 
+			    }
+			}
+		},
+		methods: {
+		    first() {
+		        this.currentPage = 1;
+		    },
+		    last() {
+		        this.currentPage = this.pages;
+		    },
+		    perv() {
+		        if (this.currentPage <= 1) return
+		        this.currentPage--;
+		    },
+		    next() {
+		        if (this.currentPage >= this.pages) return
+		        this.currentPage++;
+		    },
+		    jump(page) {
+		        this.currentPage = page;
+		    }
+		}
+	})
+    new Vue({
+        el: "#app",
+		data:{
+		    value:'0'
+		},
+    })
+</script>
+
+</html>

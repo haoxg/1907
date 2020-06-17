@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #active {
+            width: 100px;
+            height: 100px;
+            background-color: burlywood;
+            border-radius: 50px;
+            position: absolute;
+            cursor: pointer;
+        }
+        
+        #active1 {
+            width: 100px;
+            height: 100px;
+            background-color: burlywood;
+            border-radius: 50px;
+            position: absolute;
+            left: 200px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="active" v-drap></div>
+        <div id="active1"></div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.directive('drap', function(el, arg) {
+            console.log(el) //dom
+            console.log(arg) //指令信息
+                // 鼠标按下
+            el.onmousedown = function(e) {
+                // console.log('ok')
+                // 获取鼠标点击的位置
+                var disx = e.pageX - el.offsetLeft;
+                var disy = e.pageY - el.offsetTop;
+                // 鼠标移动
+                document.onmousemove = function(e) {
+                    el.style.left = e.pageX - disx + 'px';
+                    el.style.top = e.pageY - disx + 'px';
+                };
+                // 鼠标抬起
+                document.onmouseup = function() {
+                    document.onmousemove = document.onmouseup = null;
+                }
+                console.log(disx)
+            }
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                istrue: 'true'
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+				margin: auto;
+			}
+
+			.qipan {
+				width: 630px;
+				height: 630px;
+				position: relative;
+			}
+
+			.qipan .img {
+				width: 150px;
+				height: 150px;
+				position: absolute;
+				border: 1px solid #000000;
+			}
+
+			.qipan .img img {
+				width: 100%;
+				height: 100%;
+			}
+
+			.black {
+				background: black;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 150px;
+				height: 150px;
+				z-index: 10;
+			}
+
+			.active {
+				animation: donghua .5s infinite alternate;
+			}
+
+			@keyframes donghua {
+				from {
+					transform: scale(1);
+				}
+
+				to {
+					transform: scale(0.9);
+				}
+			}
+
+			.qipan p {
+				position: absolute;
+				left: 0;
+				bottom: -50px;
+				line-height: 50px;
+				font-size: 30px;
+				text-align: center;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="qipan">
+			<div class="img" v-for="item,index in chessAll" ref="content" @click="choose($event,index)" :key="index">
+				<div class="black" @click.self.stop="fnHide($event)"></div>
+				<img :src="item.img" alt="" :name="item.img" :data="item.grade">
+			</div>
+			<p>{{isChoose?"红方走棋":"蓝方走棋"}}</p>
+		</div>
+		<script type="text/javascript">
+			new Vue({
+				el: '.qipan',
+				data: {
+					red: [], //红方
+					blue: [], //蓝方
+					chessAll: [], //棋盘余子
+					row: 4,
+					isChoose: true, //选择方  默认 红方
+					isEat: true, //是否吃子
+					eatObj: {}
+				},
+				created() {
+					//创建红蓝双方对象
+					for (let i = 0; i < 8; i++) {
+						this.red.push({
+							img: './img/red-' + (i + 1) + '.jpg',
+							grade: 8 - i
+						})
+						this.blue.push({
+							img: './img/blue-' + (i + 1) + '.jpg',
+							grade: 8 - i
+						})
+					}
+					//拼接双方棋子进行布局
+					this.chessAll = this.red.concat(this.blue)
+					this.fnStyle()
+				},
+				methods: {
+					//随机打乱  进行棋盘布局
+					fnStyle() {
+						this.chessAll.sort(function() {
+							return Math.random() - Math.random()
+						})
+						this.$nextTick(() => {
+							let dom = this.$refs.content
+							dom.forEach((item, index) => {
+								item.style.top = parseInt(index / this.row) * 160 + 'px'
+								item.style.left = index % this.row * 160 + 'px'
+							})
+						})
+					},
+					//棋子遮罩
+					fnHide(evt) {
+						evt.target.style.display = 'none'
+						this.isChoose = !this.isChoose
+						this.isEat = false
+						this.clearStu()
+					},
+					//双方选择走棋
+					choose(evt, index) {
+						//判断哪方走棋
+						if (this.isChoose) {
+							this.fnEat(evt, index, 'red')
+						} else {
+							this.fnEat(evt, index, 'blue')
+						}
+					},
+					//清除选择状态
+					clearStu(is = true, evt) {
+						if (is) {
+							var dom = this.$refs.content
+						} else {
+							var dom = this.$refs.content.filter(res => {
+								return res != evt.target.parentNode
+							})
+						}
+						dom.forEach(item => {
+							item.children[1].className = ''
+						})
+					},
+					//封装吃子判断
+					fnEat(evt, index, color) {
+						if (this.isEat) {
+							//点击无子格子
+							if (this.chessAll[index].img == '') {
+								//进行移动判断
+								this.isMove(index)
+								return
+							}
+							//如果点击自己棋子 跳出
+							if (evt.target.name.match(color) != null) {
+								this.active(evt, index, color)
+								return
+							}
+							//进行移动判断
+							this.isMove(index)
+						}
+						this.active(evt, index, color)
+					},
+					//封装行动状态
+					active(evt, index, color){
+						//如果点击本方棋子 改为active状态 否则跳出
+						if (evt.target.name.match(color) == null) {
+							return
+						} else {
+							this.isEat = true
+							this.eatObj = {
+								img: evt.target.name,
+								index: index,
+								grade: parseInt(evt.target.getAttribute('data'))
+							}
+						}
+						evt.target.className = 'active'
+						this.clearStu(false, evt)
+					},
+					//判断棋子是否可以移动
+					isMove(index) {
+						if (index + 1 == this.eatObj.index && index % this.row + 1 < this.row || index - 1 == this.eatObj.index &&
+							this.row - 1 >= 0 || index + this.row == this.eatObj.index || index - this.row == this.eatObj.index) {
+							//判断移动的格子有没有棋子
+							if(this.chessAll[index].grade!=0){
+								//对方等级大于自己时 自身死亡
+								if (this.chessAll[index].grade > this.eatObj.grade) {
+									this.chessAll[this.eatObj.index].img = ''
+									this.chessAll[this.eatObj.index].grade = 0
+								//等级相同 同时死亡
+								} else if (this.chessAll[index].grade == this.eatObj.grade) {
+									this.chessAll[index].img = ''
+									this.chessAll[this.eatObj.index].img = ''
+									this.chessAll[index].grade = 0
+									this.chessAll[this.eatObj.index].grade = 0
+								} else {
+									this.chessAll[index].img = this.eatObj.img
+									this.chessAll[index].grade = this.eatObj.grade
+									this.chessAll[this.eatObj.index].img = ''
+									this.chessAll[this.eatObj.index].grade = 0
+								}
+							}else{
+								this.chessAll[index].img = this.eatObj.img
+								this.chessAll[index].grade = this.eatObj.grade
+								this.chessAll[this.eatObj.index].img = ''
+								this.chessAll[this.eatObj.index].grade = 0
+							}
+							this.isChoose = !this.isChoose
+							this.isEat = false
+							this.clearStu()
+						}
+					},
+				},
+
+			})
+		</script>
+	</body>
+</html>
