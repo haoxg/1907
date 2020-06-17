@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #app{
+            width: 400px;
+            height: 250px;
+            background-color: teal;
+            margin: 50px auto;
+        }
+        .show{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .show>a{
+            width: 30px;
+            height: 30px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            margin-top: -15px;
+            background: rgba(134,224,237,.5);
+            text-align: center;
+            line-height: 30px;
+            opacity: 0;
+            transition: .5s all;
+            border-radius: 5px;
+            z-index: 999;
+        }
+        .prev{
+            left: 10px;
+        }
+        .next{
+            right: 10px;
+        }
+        .show:hover>a{
+            opacity: 1;
+        }
+        .hidden{
+            width: 500%;
+            height: 100%;
+            /* transition: .7s all; */
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .item{
+            width: 400px;
+            height: 100%;
+            float: left;
+        }
+        .item>img{
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .list{
+            width: 100%;
+            height: 15px;
+            position: absolute;
+            bottom: 25px;
+            z-index: 999;
+            text-align: center;
+        }
+        .list>span{
+            width: 25px;
+            height: 4px;
+            display: inline-block;
+            margin: 0 5px 0 5px;
+            background-color: rgba(255, 255, 255,.7);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <el-carousel :initial='num' @cli='al' :loop='loop' :autoplay='autoplay'>
+            <carousel-item v-model='num' @mouse='mouse' ref='show'></carousel-item>
+        </el-carousel>
+    </div>
+    
+    <template id="Carousel">
+        <div class="show">
+            <a href="javascript:" class="prev" @click='prev'>&lt;</a>
+            <a href="javascript:" class="next" @click='next'>&gt;</a>
+            <slot></slot>
+            <div class="list">
+                <span v-for='(i,$index) in [1,2,3,4]' :style="{background:$index+1==num?'#86edd4':''}"></span>
+            </div>
+        </div>
+    </template>
+
+    <template id="Item">
+        <div class="hidden" style="left:0px">
+            <div class="item" v-for='i in 5'><img :src=`./img/${i==5?1:i}.jpeg` alt=""></div>
+        </div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('ElCarousel',{
+        template:'#Carousel',
+        props:['initial','loop','autoplay'],
+        computed:{
+            num:{
+                get(){
+                    return this.initial
+                },set(v){
+                    this.$emit('cli',v) 
+                }
+            }
+        },
+        methods:{
+            next(){
+                if (this.loop == true) {
+                    this.num++
+                    this.$root.$refs.show.$el.style.left = -400*this.num + 'px'
+                    this.$root.$refs.show.$el.style.transition= "all 0.5s"
+
+                    if(parseInt(this.$root.$refs.show.$el.style.left) <= -1600){
+                        setTimeout(()=>{
+                            //这个setTimeout是因为left=-600px，transition有0.5s执行动画，需要等它执行完成后，再设置left=0，
+                            //否则，直接跳到left=0,动画生硬，
+                            this.$root.$refs.show.$el.style.left = 0 + 'px'
+                            this.$root.$refs.show.$el.style.transition= "all 0s"
+                            
+                        },450)
+                        this.num = 1
+                    }
+                } else {
+                    if(this.num<4){
+                        this.num++
+                        this.$root.$refs.show.$el.style.left = -400*this.num + 'px'
+                        this.$root.$refs.show.$el.style.transition= "all 0.5s"
+                    }
+                }
+            },
+            prev(){
+                if (this.loop==true) {
+                    this.num--
+                    if (this.$root.num<=0) {
+                        this.num = 4
+                            this.$root.$refs.show.$el.style.left = -400*(this.$root.num) + 'px'
+                            this.$root.$refs.show.$el.style.transition= "all 0s"
+                    }
+                    setTimeout(()=>{
+                        this.$root.$refs.show.$el.style.left = -400*(this.$root.num-1) + 'px'
+                        this.$root.$refs.show.$el.style.transition= "all .5s"
+                    },100)
+                } else {
+                    if(this.num>1){
+                        this.num--
+                        this.$root.$refs.show.$el.style.left = -400*(this.$root.num-1) + 'px'
+                        this.$root.$refs.show.$el.style.transition= "all 0.5s"
+                    }
+                }
+            }
+        },
+        mounted(){
+            this.$root.$refs.show.$el.style.left = -400*(this.$root.num-1) + 'px'
+            this.autoplay==true?setInterval(()=>{this.next()},1000):''
+        }
+    })
+    
+    Vue.component('CarouselItem',{
+        template:'#Item',
+        model:{
+            prop:'val',
+            event:'mouse'
+        },
+        props:['val'],
+        computed:{
+            num:{
+                get(){
+                    return this.val
+                },set(v){
+                    this.$emit('cli',v) 
+                }
+            }
+        },
+    })
+   var vm = new Vue({
+        el:'#app',
+        data:{
+            num:1,
+            loop:false,
+            autoplay:false
+        },
+        mounted(){
+            console.log(this.$refs)
+        },
+        methods:{
+            al(event){
+               this.num = event
+            },
+            mouse(event){
+                this.num=event
+            }
+        }
+    })
+</script>
+</html>
