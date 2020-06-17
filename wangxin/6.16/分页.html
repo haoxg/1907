@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分页</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #box {
+            width: 600px;
+            margin: 10px auto;
+        }
+        
+        #prev,
+        #active,
+        #next {
+            float: left;
+            margin: 0px 5px 0 5px;
+        }
+        
+        #active {
+            width: 20px;
+            height: 20px;
+            border: burlywood 1px solid;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .active {
+            background-color: darkgoldenrod;
+        }
+        
+        input {
+            width: 40px;
+            outline: none;
+            margin: 4px;
+        }
+        
+        #hou {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <Pagination></Pagination>
+    </div>
+    <template id="Pagination">
+        <div>
+            <button id="prev" @click="prev">上一页</button>
+            <div id="active" :class="i==index?'active':''" v-for="i in 10" :key="i">{{i}}</div>
+            <button id="next" @click="next">下一页</button>
+            <div id="hou">前往<input type="text"  v-model="index">页</div>
+        </div>
+    </template>
+    <script>
+        Vue.component("Pagination", {
+            template: "#Pagination",
+            data() {
+                return {
+                    index: 1
+                }
+            },
+            methods: {
+                prev() {
+                    console.log('ok')
+                    this.index == 1 ? this.index = 1 : this.index--
+
+                },
+                next() {
+                    console.log('ok')
+                    this.index <= 9 ? this.index++ : this.index = 1
+                        // this.index = tim
+                },
+            }
+        })
+
+        new Vue({
+            el: "#box"
+        })
+    </script>
+</body>
+
+</html>

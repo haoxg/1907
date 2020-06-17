@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
+		.hezi{
+			width: 100px;
+			height: 100px;
+			background: red;
+			/*position: relative;*/
+		}
+		.xfq{
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background: blue;
+			transition
+			/*position: relative;*/
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<!-- <div class="hezi" v-tz=''>
+			
+		</div> -->
+		<div class="xfq" v-tz=''>
+			
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../vue.js"></script>
+<script type="text/javascript">
+	new Vue({
+		el:'#box',
+		directives:{
+			'tz':function(el){
+				el.onmousedown = function (e){
+					el.style.position = 'relative';
+					
+					var evt = e || event;
+					var X = evt.offsetX;//鼠标按下时X的位置
+					var Y = evt.offsetY;//鼠标按下时Y的位置
+					onmousemove = function (e){
+						var evt = e || event;
+						var yX = evt.clientX;//鼠标移动时X的位置
+						var yY = evt.clientY;//鼠标移动时Y的位置
+						el.style.left = yX - X +'px';
+						el.style.top = yY - Y +'px';
+						if (el.style.top <= '0px') {
+							el.style.top = -el.clientHeight + 'px';
+						}
+						if (el.style.left  <= '0px') {
+							el.style.left = -el.clientWidth + 'px';
+						}
+						console.log(el.style.top == 0+'px',)
+					}
+
+					onmouseup = function () {
+						onmousemove = null;
+					}
+					
+				}
+			}
+		}
+	})
+	
+</script>
+</html>

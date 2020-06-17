@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            .el-pager {
+                user-select: none;
+                list-style: none;
+                display: inline-block;
+                vertical-align: top;
+                font-size: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .el-pager li {
+                padding: 0 4px;
+                background: #fff;
+                vertical-align: top;
+                display: inline-block;
+                font-size: 13px;
+                min-width: 35.5px;
+                height: 28px;
+                line-height: 28px;
+                cursor: pointer;
+                box-sizing: border-box;
+                text-align: center;
+                margin: 0;
+            }
+
+            .pre,
+            .next {
+                background: 50% no-repeat;
+                background-size: 16px;
+                background-color: #fff;
+                cursor: pointer;
+                margin: 0;
+                color: #303133;
+                border: none;
+                outline: none;
+            }
+
+            .pre {
+                padding-right: 12px;
+            }
+
+            .next {
+                padding-left: 12px;
+            }
+
+            .el-pagination button {
+                border: none;
+                padding: 0 6px;
+                display: inline-block;
+                font-size: 13px;
+                min-width: 35.5px;
+                height: 28px;
+                line-height: 28px;
+                vertical-align: top;
+                box-sizing: border-box;
+
+            }
+
+            .inner {
+                -webkit-appearance: none !important;
+                width: 50px;
+                padding: 0 3px;
+                background-color: #fff;
+                background-image: none;
+                border-radius: 4px;
+                border: 1px solid #dcdfe6;
+                box-sizing: border-box;
+                color: #606266;
+                line-height: normal;
+                display: inline-block;
+                font-size: inherit;
+                outline: none;
+                cursor: pointer;
+                height: 28px;
+                text-align: center;
+                transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+            }
+
+            .active {
+                color: #409eff;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box">
+            <el-pagination></el-pagination>
+        </div>
+        <template id="pagination">
+            <div class="el-pagination">
+                <button class="pre" @click="pre" ref='syg'>&lt;</button>
+                <ul class="el-pager">
+                    <li v-for="i in page" :key="i" :class="i==n?'active':''" @mouseover="over(i)" @mouseout="out"
+                        @click="btn(i)" :style="{color:num==i?'#409eff':''}">{{i}}</li>
+                </ul>
+                <button class="next" @click="next" ref="xyg">&gt;</button>
+                <span>前往<input type="number" class="inner" @blur="change" v-model="shuNum">页</span>
+            </div>
+        </template>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('el-pagination', {
+            template: '#pagination',
+            props: ['w'],
+            data() {
+                return {
+                    page: this.w || 10,
+                    num: 0,
+                    n: 5,
+                    shuNum: 5
+                }
+            },
+            watch: {
+                n() {
+                    var syg = this.$refs.syg;
+                    var xyg = this.$refs.xyg;
+                    if (this.n == 1) {
+                        syg.style.cursor = 'not-allowed';
+                        syg.style.disabled = true;
+                    } else if (this.n == this.page) {
+                        xyg.style.cursor = 'not-allowed';
+                        xyg.style.disabled = true;
+                    } else {
+                        syg.style.cursor = 'pointer';
+                        syg.style.disabled = false;
+                        xyg.style.cursor = 'pointer';
+                        xyg.style.disabled = false;
+                    }
+                },
+            },
+            mounted() {
+                var syg = this.$refs.syg
+                if (this.n == 1) {
+                    syg.style.cursor = 'not-allowed'
+                    syg.style.disabled = true
+                }
+            },
+            methods: {
+                over(i) {
+                    this.num = i
+                },
+                out() {
+                    this.num = ''
+                },
+                btn(i) {
+                    this.n = i
+                    this.shuNum = i
+                },
+                pre() {
+                    if (this.n <= 1) {
+                        this.n = 1;
+                    } else {
+                        this.n--
+                    }
+                },
+                next() {
+                    if (this.n >= this.page) {
+                        this.n = this.page;
+                    } else {
+                        this.n++
+                    }
+                },
+                change() {
+                    if (this.shuNum == '') {
+                        this.shuNum = this.n
+                    } else {
+                        this.n = this.shuNum
+                    }
+                }
+            }
+        })
+        new Vue().$mount('#box')
+    </script>
+
+</html>

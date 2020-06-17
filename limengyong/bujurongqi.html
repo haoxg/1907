@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            [v-cloak] {
+                display: none;
+            }
+
+            .el-container {
+                display: flex;
+                flex-direction: row;
+                flex: 1;
+                flex-basis: auto;
+                box-sizing: border-box;
+                min-width: 0;
+            }
+
+            .el-container .is-vertical {
+                flex-direction: column
+            }
+
+            .el-aside {
+                background-color: #d3dce6;
+                color: #333;
+                text-align: center;
+                line-height: 200px;
+            }
+
+            .el-header,
+            .el-footer {
+                background-color: #B3C0D1;
+                color: #333;
+                text-align: center;
+                line-height: 60px;
+            }
+
+            .el-main {
+                background-color: #E9EEF3;
+                color: #333;
+                text-align: center;
+                line-height: 160px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box" v-cloak>
+            <!-- <el-container></el-container> -->
+            <el-container>
+                <el-aside :kuan="200">Aside</el-aside>
+                <el-container style="flex-direction: column">
+                    <el-header>Header</el-header>
+                    <el-main>Main</el-main>
+                    <el-footer>Footer</el-footer>
+                </el-container>
+            </el-container>
+        </div>
+        <!-- 容器组件 -->
+        <template id="container">
+            <div class="el-container">
+                <slot></slot>
+            </div>
+        </template>
+        <!-- 侧边栏组件 -->
+        <template id="aside">
+            <div class="el-aside" :style="{width:kuan+'px' || '200px'}">
+                <slot></slot>
+            </div>
+        </template>
+        <!-- 头部组件 -->
+        <template id="header">
+            <div class="el-header">
+                <slot></slot>
+            </div>
+        </template>
+        <!-- main组件 -->
+        <template id="main">
+            <div class="el-main">
+                <slot></slot>
+            </div>
+        </template>
+        <!-- footer组件 -->
+        <template id="footer">
+            <div class="el-footer">
+                <slot></slot>
+            </div>
+        </template>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('el-container', {
+            template: '#container'
+        })
+        Vue.component('el-aside', {
+            template: '#aside',
+            props: ['kuan']
+        })
+        Vue.component('el-header', {
+            template: '#header'
+        })
+        Vue.component('el-main', {
+            template: '#main'
+        })
+        Vue.component('el-footer', {
+            template: '#footer'
+        })
+        new Vue().$mount('#box')
+    </script>
+
+</html>

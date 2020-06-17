@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<title>Document</title>
+	</head>
+
+	<body>
+		<div id="box">
+			<component is="card"></component>
+		</div>
+	</body>
+	<script>
+		Vue.component('card', {
+			template: `
+			<div style="width: 500px;">
+				<input type="text" style="width: 400px;height: 30px;border: 1qpx solid gray;float: left;outline: none;" v-model="cont"
+				 placeholder="请输入">
+				<button @click="btn" style="width: 80px;height: 36px;line-height: 36px;text-align: center;float: left;border: none;outline: none;">发布说说</button>
+				<div v-for="i in arr" style="width: 400px;margin: 10px;border: 1px solid gray;">
+					<img style="float:left;width: 50px;height: 50px;border-radius: 50%;margin: 10px 5px;" :src="i.img">
+					<div style="float: left; width: 330px;height: auto;margin-left: 10px;">
+						<p style="margin-left: 5px;font-size: 14px;">昵称：美国国家地理</p>
+						<div style="margin-left: 5px;line-height: 30px;">{{i.title}}</div>
+						<div style="margin-top: 10px;">{{i.time}}</div>
+					</div>
+				</div>
+			</div>
+			`,
+			data() {
+				return {
+					cont: '',
+					arr: [],
+					img: `https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3521319392,1160740190&fm=26&gp=0.jpg`,
+					time: '',
+				}
+			},
+			methods: {
+				btn() {
+					if (this.cont !== '') {
+						var date = new Date()
+						var year =  date.getFullYear()
+						var month = date.getMonth() + 1
+						var data = date.getDate()
+						var hour = date.getHours()
+						var minute = date.getMinutes()
+						this.time = year + '年' + month + '月' + data + '日' + hour + ':' + minute
+						this.arr.push({
+							title: this.cont,
+							img: this.img,
+							time: this.time
+						})
+					}
+				},
+			}
+		})
+		new Vue({
+			el: '#box'
+		})
+	</script>
+
+</html>

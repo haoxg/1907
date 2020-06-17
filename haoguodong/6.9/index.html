@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+<body>
+    <div id="box">
+        
+    </div>
+</body>
+<!-- <script src="vue.js"></script> -->
+<script>
+//    new Vue({
+//         el:'#box',
+//         data:{
+//             obj:{
+//                 a:2,
+//                 b:3
+//             }
+//         },
+//         methods:{
+//             fn(n){
+//                 console.log(n)
+//             }
+//         },
+//         created(){
+           
+//         }
+//     })
+    // vue 写法 判断是否为对象 
+    // let obj ={}
+    // function isObj(v){
+    //     return v !== null && typeof v === 'object'
+    // }
+    // console.log(isObj(obj))
+    // console.log(Object.prototype.toString.call(obj))
+
+    //判断字符串
+    // let str = ''
+    // function isStr(v){
+    //     return v === '' || typeof v === 'string'
+    // }
+    // console.log(isStr(str),str)
+
+    function isdom(v){
+        return v === v && typeof v === 'array'
+    }
+    // //相当于 jq 的$获取元素的原生逻辑
+    const $ =  (selector)=>{
+       return document.querySelectorAll(selector)
+    }
+   
+    console.log($('#box'))
+    // console.log($('#box').css('width','100px'))
+</script>
+</html>
