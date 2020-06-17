@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            text-align: center;
+        }
+        #container{
+            width: 800px;
+            height: 600px;
+            overflow: hidden;
+        }
+        #zujian1{
+            width: 200px;
+            height: 600px;
+            float: left;
+            line-height: 600px;
+            background-color: black;
+            color: white;
+        }
+        #zujian2{
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+            background-color: pink;
+        }
+        #zujian3{
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+            background-color: palevioletred;
+        }
+        #zujian4{
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+            background-color: indianred;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div id="container">
+        <zujian1></zujian1>
+        <zujian2></zujian2>
+        <zujian3></zujian3>
+        <zujian4></zujian4>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    Vue.component('zujian1',{
+        template:`<div id="zujian1">组件1</div>`
+    })
+    Vue.component('zujian2',{
+        template:`<div id="zujian2">组件2</div>`
+    })
+    Vue.component('zujian3',{
+        template:`<div id="zujian3">组件3</div>`
+    })
+    Vue.component('zujian4',{
+        template:`<div id="zujian4">组件4</div>`
+    })
+    new Vue({}).$mount('#app')
+</script>
+</html>
