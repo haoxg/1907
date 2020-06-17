@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            user-select: none;
+        }
+
+        #container {
+            width: 800px;
+            height: 400px;
+            overflow: hidden;
+            margin: 150px auto;
+        }
+
+        .my-carousel {
+            width: 400%;
+            height: 400px;
+            position: relative;
+            transition: all .5s;
+
+        }
+
+        .my-carousmy-item {
+            width: 800px;
+            height: 100%;
+            float: left;
+            text-align: center;
+            line-height: 400px;
+            background-color: pink;
+        }
+
+        .lf,
+        .rt {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 50px;
+            display: inline-block;
+            font-size: 24px;
+            top: -200%;
+            cursor: pointer;
+            margin-top: -25px;
+            position: absolute;
+            opacity: 0;
+            background-color: rgba(154, 17, 236, 0.2);
+        }
+
+        .rt {
+            right: 0%;
+        }
+
+        .lf {
+            left: 0%;
+        }
+
+        #active:hover {
+            opacity: 1;
+        }
+
+        .btn {
+            width: 800px;
+            height: 100px;
+            margin: auto;
+            position: absolute;
+        }
+
+        .my-carousmy-item:nth-of-type(1) {
+            background-color: rgba(0, 0, 0, .1);
+        }
+
+        .my-carousmy-item:nth-of-type(2) {
+            background-color: rgba(0, 0, 0, .3);
+        }
+
+        .my-carousmy-item:nth-of-type(3) {
+            background-color: rgba(0, 0, 0, .1);
+        }
+
+        .my-carousmy-item:nth-of-type(4) {
+            background-color: rgba(0, 0, 0, .3);
+        }
+
+        #jd {
+            width: 220px;
+            height: 10px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: -80px;
+            top: 70%;
+        }
+
+        #jd span {
+            width: 50px;
+            height: 10px;
+            margin-right: 5px;
+            display: inline-block;
+            border-radius: 20px;
+            background: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="container">
+            <my-carousel trigger="click" height="150px" :style={left:'-'+index*w+'px'}>
+                <my-carousmy-item v-for="item in arr" :key="item">
+                    <h3 class="small">{{ item }}</h3>
+                </my-carousmy-item>
+            </my-carousel>
+            <!--  -->
+            <div class="btn">
+                <span id="active" class="lf" @click="tp"> < </span>
+                        <span id="active" class="rt" @click="bm">></span>
+            </div>
+            <!--  -->
+            <div id="jd">
+                <span v-for='(i,$index) in arr' @click='index=$index'
+                    :style={background:index==$index?'whitesmoke':''}></span>
+            </div>
+            <!--  -->
+        </div>
+    </div>
+</body>
+<script>
+    Vue.component('my-carousel', {
+        template: `<div class="my-carousel"><slot></slot></div>`,
+    })
+    Vue.component('my-carousmy-item', {
+        template: `<div class="my-carousmy-item"><slot></slot></div>`,
+    })
+
+    new Vue({
+        data: {
+            w: 800,
+            index: 0,
+            arr: [1, 2, 3, 4],
+        },
+        methods: {
+            tp() {
+                this.index > 0 ? this.index-- : this.index = this.arr.length - 1
+            },
+            bm() {
+                this.index < this.arr.length - 1 ? this.index++ : this.index = 0
+            },
+            mount(){
+                setTimeout(()=>{
+                    console.log(1);
+                    
+                },1000)
+            }
+        }
+    }).$mount('#app')
+</script>
+
+</html>
