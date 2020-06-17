@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #app{
+            width: 500px;
+            height: 40px;
+            background: pink;
+            margin:60px auto;
+            position: relative;
+            padding:10px 0 10px 10px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        .Pagination{
+            width: 480px;
+            height: 20px;
+            float: left;
+            display: flex;
+        }
+        .Pagination>div:nth-of-type(1){
+            width: auto;
+        }
+        .Pagination>div>div{
+            width: 20px;
+            height: 20px;
+            margin: 0 2px 0 2px;
+            background-color: #86c2ed;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            float: left;
+        }
+        .Pagination .input{
+            width:110px;
+            display: flex;
+            overflow: hidden;
+        }
+        .Pagination .input>input{
+            width: 50px;
+            height: 20px;
+            text-indent: .5em;
+            margin: 0 3px 0 3px;
+            font-size: 12px;
+            outline: none;
+        }
+        .text{
+            position: absolute;
+            right: 0;
+        }
+        .prev{
+            width: 50px;
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .next{
+            width: 50px;
+            margin-right: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .Pagination>div>.active{
+            background: #d5ed86;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <Pagination></Pagination>
+    </div>
+    <!-- 分页 -->
+    <template id="list">
+        <div class="Pagination">
+            <button class="prev" @click='prev'>上一页</button>
+            <div><div v-for='i in 10' :key='i' :class="i == sum?'active':''" @click='list(i)' >{{i}}</div></div>
+            <button class="next" @click='next'>下一页</button>
+            <div class="input">
+                <span>前往</span><input type="number" v-model.number.lazy='sum'><span>页</span>
+            </div>
+        </div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('Pagination',{
+        template:'#list',
+        data(){
+            return {
+                sum:1
+            }
+        },
+        methods:{
+            prev(){
+                if(this.sum>1){
+                    this.sum--
+                }
+            },
+            next(){
+                if(this.sum<10){
+                    this.sum++
+                }
+            },
+            list(i){
+                this.sum = i
+            }
+        }
+    })
+
+    new Vue({
+        el:'#app',
+    })
+</script>
+</html>
