@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			[v-cloak]: {
+				display: none;
+			}
+
+			#container {
+				width: 800px;
+				height: 400px;
+				display: flex;
+				text-align: center;
+			}
+
+			.rt {
+				height: 400px;
+				flex: 1;
+			}
+			#aside {
+				width: 200px;
+				height:400px;
+				float: left;
+				background-color: #d3dce6;
+				text-align: center;
+				line-height: 400px;
+			}
+			.le{
+				height: 400px;
+				flex: 1
+			}
+			#header {
+				width: 600px;
+				height: 100px;
+				background-color: #b3c0d1;
+				color: #333;
+				line-height: 100px;
+			}
+
+			#main {
+				width: 600px;
+				height: 200px;
+				background-color: #e9eef3;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+
+			#footer {
+				width: 600px;
+				height: 100px;
+				background-color: #b3c0d1;
+				color: #333;
+				line-height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" v-cloak>
+			<div id="container">
+				<my_container></my_container>
+				<my_container></my_container>
+			</div>
+		</div>
+	</body>
+	<script>
+		Vue.component('my_container',{
+			template: 
+			`	<div>
+					<div id="aside">Aside</div>
+					<div id="header">Header</div>
+					<div id="main">Main</div>
+					<div id="footer">Footer</div>
+				</div>
+			`
+		})
+		new Vue({
+			el: '#box'
+		})
+	</script>
+</html>

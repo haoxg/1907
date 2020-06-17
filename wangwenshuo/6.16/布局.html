@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 500px;
+            height: 400px;
+            margin: auto;
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+    <div id="box" v-cloak>
+        <container>
+            <left>left</left>
+            <right>
+                <aheader>
+                    <template >header</template>
+                </aheader>
+                <Acontent>
+                    <template >content</template>
+                </Acontent>
+                <afooter>
+                    <template >footer</template>
+                </afooter>
+            </right>
+        </container>
+    </div>
+    <template id="container">
+        <div style="width: 500px;height:400px;overflow: hidden;">
+            <slot></slot>
+        </div>
+    </template>
+
+    <!-- 右 -->
+    <template id="Aright">
+        <div style=" width: 80%;height: 400px;float: right;">
+            <slot></slot>
+        </div>
+    </template>
+    <!-- 左边栏 -->
+    <template id="Aside">
+        <div style=" width: 20%;height: 400px;float: left;background: #ccc;text-align: center;line-height: 400px;"><slot></slot></div>
+    </template>
+    <!-- 头部 -->
+    <template id="Aheader">
+        <div style=" width: 100%;height: 100px;float: left;background: red;text-align: center;line-height: 100px;"><slot></slot></div>
+    </template>
+     <!-- 内容 -->
+     <template id="content">
+        <div style="width: 100%;height: 200px;float: left;background: green;text-align: center;line-height: 200px;"><slot></slot></div>
+    </template>
+    <!-- 页尾 -->
+    <template id="footer">
+        <div style="width: 100%;height: 100px;float: left;background: yellow;text-align: center;line-height: 100px;"><slot></slot></div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('container',{
+        template:'#container'
+    })
+    
+    Vue.component('left',{
+        template:'#Aside'
+    })
+
+    Vue.component('right',{
+        template:'#Aright'
+    })
+
+    Vue.component('aheader',{
+        template:'#Aheader'
+    })
+
+    Vue.component('Acontent',{
+        template:'#content'
+    })
+
+    Vue.component('afooter',{
+        template:'#footer'
+    })
+    new Vue({
+        el:'#box'
+    })
+</script>
+</html>

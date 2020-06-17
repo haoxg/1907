@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #app{
+            width: 500px;
+            height: 40px;
+            background: lightpink;
+            margin:60px auto;
+            position: relative;
+            padding:10px 0 10px 10px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        .Pagination{
+            width: 380px;
+            height: 20px;
+            float: left;
+            display: flex;
+        }
+        .Pagination>div:nth-of-type(1){
+            width: auto;
+        }
+        .Pagination>div>div{
+            width: 20px;
+            height: 20px;
+            margin: 0 2px 0 2px;
+            background-color: #86c2ed;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            float: left;
+        }
+         .input{
+            width:110px;
+            display: flex;
+            overflow: hidden;
+            float: right;
+        }
+         .input>input{
+            width: 50px;
+            height: 20px;
+            text-indent: .5em;
+            margin: 0 3px 0 3px;
+            font-size: 12px;
+            outline: none;
+        }
+        .div-text{
+            position: absolute;
+            right: 0;
+        }
+        .jian{
+            width: 50px;
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .jia{
+            width: 50px;
+            margin-right: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .Pagination>div>.active{
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <fen-ye :v1='value' v-model='value' @int='vl'></fen-ye>
+        <div class="input">
+            <span>前往</span><input type="number" v-model.number.lazy='value'><span>页</span>
+        </div>
+    </div>
+    <!-- 分页 -->
+    <template id="list">
+        <div class="Pagination">
+            <button class="prev" @click='prev'>上一页</button>
+            <div><div v-for='i in 10' :key='i'  @click='list(i)' :class="i == num?'active':''">{{i}}</div></div>
+            <button class="next" @click='next'>下一页</button>
+        </div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('FenYe',{
+        model:{
+            prop:'val',
+            event:'int'
+        },
+        props:['val'],
+        template:'#list',
+        computed:{
+            num:{
+                get(){
+                    return this.val
+                },
+                set(v){
+                    this.$emit('int',v) 
+                }
+            }
+        },
+        methods:{
+            prev(){
+                if (this.num>1) {
+                    this.num--
+                }
+            },
+            next(){
+                if(this.num<10){
+                    this.num++
+                }
+            },
+            list(i){
+                this.num = i
+            },
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            value:1
+        },
+        methods:{
+            al(event){
+                this.value = event
+            }
+        }
+    })
+</script>
+</html>

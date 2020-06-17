@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件轮播</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #box {
+            width: 400px;
+            height: 300px;
+            margin: 50px auto;
+            border: burlywood 1px solid;
+        }
+        
+        #conner {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        #conner .nepr {
+            width: 50px;
+            height: 50px;
+            background-color: chocolate;
+            border-radius: 50px;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            display: none;
+        }
+        
+        #conner:hover>.nepr {
+            display: block;
+        }
+        
+        #prev {
+            top: 120px;
+            left: 0;
+        }
+        
+        #next {
+            top: 120px;
+            right: 0;
+        }
+        
+        #content {
+            width: 500%;
+            height: 300px;
+            z-index: 1;
+        }
+        
+        .active {
+            width: 400px;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+            font-size: 24px;
+            float: left;
+            z-index: 999;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <el-carousel trigger="click" height="150px">
+
+        </el-carousel>
+    </div>
+    <template id="carousel">
+        <div id="conner">
+            <div id="prev" class="nepr" @click="prev">←</div>
+            <div id="next" class="nepr" @click="next">→</div>
+            <el-carousel-item ref="div"></el-carousel-item>
+        </div>
+    </template>
+
+    <template id="item">
+         <div id="content" style="position: absolute; z-index: -1;">
+            <div class="active" v-for='i in indexarr'>{{i}}</div>
+             <slot></slot>
+         </div>
+    </template>
+    <script>
+        Vue.component("el-carousel", {
+            template: '#carousel',
+            // props: ["autoplay", "arrow", "loop", "interval", "initial-index"],
+            methods: {
+                next() {
+                    console.log(this$refs.div)
+                },
+                prev() {
+                    console.log(this.$refs.div)
+                }
+            }
+        })
+        Vue.component("el-carousel-item", {
+            template: "#item",
+            data() {
+                return {
+                    indexarr: 5
+                }
+            }
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                index: 0,
+            },
+            created() {
+                console.log(this.$refs)
+            }
+        })
+    </script>
+</body>
+
+</html>
