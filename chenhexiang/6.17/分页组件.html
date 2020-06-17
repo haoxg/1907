@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="vue.js"></script>
+		<style type="text/css">
+			.pagination span {
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+				cursor: pointer;
+				user-select: none;
+			}
+
+			.pagination p {
+				display: inline-block;
+			}
+
+			.pagination input {
+				width: 30px;
+				text-align: center;
+				margin: 0 3px;
+			}
+
+			.active {
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="box">
+			v-model值：{{value}}
+			<el-pagination v-model="value" :pages="20"></el-pagination>
+		</div>
+		<template id="pagination">
+			<div class="pagination">
+				<span @click="left">&lt;</span>
+				<span v-for="item in list" :class="item==nIndex?'active':''" @click="nIndex=item">{{item}}</span>
+				<span @click="right">&gt;</span>
+				<p>前往<input type="text" v-model.lazy="nIndex" />页</p>
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			Vue.component('el-pagination', {
+						template: '#pagination',
+							props: ['value', 'pages'],
+							data() {
+								return {
+									page: this.pages || 10,
+									nIndex: this.value || 1,
+									list: []
+								}
+							},
+							created() {
+								this.style(this.nIndex)
+							},
+							watch: {
+								'nIndex'(n, l) {
+									this.style(n)
+									this.$emit('input', n)
+								}
+							},
+							methods: {
+								left() {
+									this.nIndex--
+									this.nIndex = this.nIndex < 1 ? 1 : this.nIndex
+								},
+								right() {
+									this.nIndex++
+									this.nIndex = this.nIndex > this.page ? this.page : this.nIndex
+								},
+								style(n) {
+									var arr = []
+									for (let i = 0; i < this.page; i++) {
+										arr.push(i + 1)
+									}
+									if (arr.length > 8) {
+										if (n > 4 && n + 3 < this.page) {
+											this.list = [1, '...']
+											this.list.push(...arr.splice(n - 3, 5))
+											this.list.push('...')
+											this.list.push(this.page)
+										} else if (n + 3 >= this.page) {
+											this.list = [1, '...']
+											this.list.push(...arr.splice(-7))
+										} else if (n < 5 ) {
+											this.list = arr.splice(0, 7)
+											this.list.push('...')
+											this.list.push(...arr.splice(-1))
+										}
+									} else {
+										this.list = arr
+									}
+								}
+							}
+						})
+
+					new Vue({
+						el: '.box',
+						data: {
+							value: 1
+						}
+					})
+		</script>
+	</body>
+</html>
