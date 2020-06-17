@@ -14,47 +14,47 @@
         }
         #app{
             width: 500px;
-            height: 400px;
+            height: 300px;
             margin: auto;
             background: pink;
         }
-        .cont{
+        .box{
             width: 500px;
             height:400px;
             overflow: hidden;
         }
         .left{
             width: 20%;
-            height: 400px;
+            height: 300px;
             float: left;
-            background: #ccc;
+            background: blue;
             text-align: center;
             line-height: 400px;
         }
         .right{
             width: 80%;
-            height: 400px;
+            height: 300px;
             float: right;
         }
         .header{
             width: 100%;
-            height: 100px;
+            height: 80px;
             float: left;
-            background: red;
+            background: #222;
             text-align: center;
             line-height: 100px;
         }
         .content{
             width: 100%;
-            height: 200px;
+            height: 140px;
             float: left;
-            background: green;
+            background: pink;
             text-align: center;
             line-height: 200px;
         }
         .footer{
             width: 100%;
-            height: 100px;
+            height: 80px;
             float: left;
             background: yellow;
             text-align: center;
@@ -65,38 +65,38 @@
 <body>
     <div id="app" v-cloak>
         <container>
-            <left>left</left>
+            <left>左</left>
             <right>
                 <aheader>
-                    <template >header</template>
+                    <template >头部</template>
                 </aheader>
                 <Acontent>
-                    <template >content</template>
+                    <template >内容</template>
                 </Acontent>
                 <afooter>
-                    <template >footer</template>
+                    <template >页尾</template>
                 </afooter>
             </right>
         </container>
     </div>
     <template id="container">
-        <div class="cont">
+        <div class="box">
             <slot></slot>
         </div>
     </template>
 
     <!-- 右 -->
-    <template id="Aright">
+    <template id="one">
         <div class="right">
             <slot></slot>
         </div>
     </template>
     <!-- 左边栏 -->
-    <template id="Aside">
+    <template id="two">
         <div class="left"><slot></slot></div>
     </template>
     <!-- 头部 -->
-    <template id="Aheader">
+    <template id="three">
         <div class="header"><slot></slot></div>
     </template>
      <!-- 内容 -->
@@ -115,15 +115,15 @@
     })
     
     Vue.component('left',{
-        template:'#Aside'
+        template:'#two'
     })
 
     Vue.component('right',{
-        template:'#Aright'
+        template:'#one'
     })
 
     Vue.component('aheader',{
-        template:'#Aheader'
+        template:'#three'
     })
 
     Vue.component('Acontent',{
