@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
+    <title>走马灯</title>
+    <style>
+        .el_carousel {
+            background-color: #99a9bf;
+            width: 600px;
+            height: 300px;
+            margin-top: 10px;
+        }
+
+        .main {
+            color: whitesmoke;
+            font-size: 20px;
+            line-height: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wp">
+        <el_carousel :item="4" initial_index :interval='4000'></el_carousel>
+        <el_carousel :item="5" initial_index :interval='4000' arrow='hover'></el_carousel>
+        <el_carousel :item="5" initial_index arrow="never"></el_carousel>
+    </div>
+
+    <template id="car">
+        <div class="swiper-container el_carousel">
+            <div class="swiper-wrapper" ref='cont'>
+                <div class="swiper-slide main" v-for='i in item' :key=i>{{i}}</div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev" ref="pre"></div>
+            <div class="swiper-button-next" ref='next'></div>
+        </div>
+    </template>
+
+</body>
+<script>
+    let vm = new Vue({
+        el: '.wp',
+        components: {
+            'el_carousel': {
+                template: "#car",
+                props: {
+                    item: { //渲染几个内容
+
+                    },
+                    initial_index: { //开始显示下标
+                        default: 0
+                    },
+                    loop: { //是否循环
+                        default: true
+                    },
+                    arrow: { //箭头显示时机
+                        default: 'always'
+                    },
+                    interval: { //自动切换时间
+                        default: 0
+                    },
+                    direction: { //切换的方向
+                        default: 'horizontal'
+                    }
+                },
+                mounted() {
+                    console.log(this.arrow)
+                    if (this.arrow == 'hover') {
+                        this.$refs.pre.style.display = 'none'
+                        this.$refs.next.style.display = 'none'
+                        this.$refs.cont.onmouseover = () => {
+                            console.log(this.$refs.pre)
+                            this.$refs.pre.style.display = 'block'
+                            this.$refs.next.style.display = 'block'
+
+                        }
+                        this.$refs.cont.onmouseout = () => {
+                            console.log(this.$refs.pre)
+                            this.$refs.pre.style.display = 'none'
+                            this.$refs.next.style.display = 'none'
+
+                        }
+                    } else if (this.arrow == 'always') {
+                        this.$refs.pre.style.display = 'block'
+                        this.$refs.next.style.display = 'block'
+                    } else if (this.arrow == 'never') {
+                        this.$refs.pre.style.display = 'none'
+                        this.$refs.next.style.display = 'none'
+                    }
+
+                    var mySwiper = new Swiper('.el_carousel', {
+                        direction: this.direction,
+                        loop: this.loop,
+                        autoplay: this.interval,
+                        // pagination: '.swiper-pagination',
+                        // autoplay arrow loop  interval  initial-index
+                        // 如果需要前进后退按钮
+                        nextButton: '.swiper-button-next',
+                        prevButton: '.swiper-button-prev',
+                        initialSlide: this.initial_index, //默认显示
+                        simulateTouch: false,
+                    })
+                }
+
+
+            }
+        }
+    })
+</script>
+
+</html>
