@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>轮播图</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			.lunbo {
+				width: 600px;
+				height: 337px;
+				margin: 100px auto;
+				overflow: hidden;
+				position: relative;
+			}
+
+			.lunbo img {
+				width: 600px;
+				float: left;
+			}
+
+			.lunbo li {
+				float: left;
+			}
+
+			p {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: rgba(110, 114, 117, 0.6);
+				text-align: center;
+				line-height: 30px;
+				color: white;
+				position: absolute
+			}
+
+			#prev {
+				left: 0;
+				top: 50%;
+				user-select: none;
+				cursor: pointer;
+			}
+
+			#next {
+				right: 0;
+				top: 50%;
+				user-select: none;
+				cursor: pointer;
+			}
+
+			#dian {
+				width: 100px;
+				height: 20px;
+				position: absolute;
+				bottom: 20px;
+				left: 250px;
+			}
+
+			#dian span {
+				width: 20px;
+				height: 5px;
+				display: inline-block;
+				margin-left: 10px;
+				background-color: #ccc;
+			}
+
+			.active {
+				background-color: black;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<lunbo></lunbo>
+		</div>
+		<template id="lunbo">
+			<div class="lunbo" @mouseout="yiru">
+				<ul>
+					<p v-for="i in imgs.length" id="prev" @click="prev(i)" v-show="isbtn"> < </p> 
+					<p v-for="i in imgs.length" id="next" @click="next(i)" v-show="isbtn"> > </p>
+					<li v-for="img,index in imgs" v-show="index==countImg"><img :src="img"></li>
+					<div id="dian"><span v-for="i in imgs.length" :class="{active:countImg==i-1}" v-show="isbtn"></span></div>
+				</ul>
+			</div>
+		</template>
+		<script>
+			Vue.component('lunbo', {
+				template: '#lunbo',
+				data() {
+					return {
+						imgs: ['https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1851529044,1960742341&fm=26&gp=0.jpg',
+							   'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2437897147,3423395754&fm=26&gp=0.jpg',
+							   'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3836010369,196474655&fm=26&gp=0.jpg',
+						],
+						countImg: 0,
+						isbtn: false
+					}
+				},
+				methods: {
+					prev(i) {
+						console.log(this.countImg)
+						if (this.countImg == 0) {
+							this.countImg = this.imgs.length - 1
+						} else {
+							this.countImg--
+						}
+					},
+					next() {
+						if (this.countImg == this.imgs.length - 1) {
+							this.countImg = 0
+						} else {
+							this.countImg++
+						}
+					},
+					yiru(isbtn) {
+						this.isbtn = !isbtn
+					},
+				}
+			})
+			new Vue({
+				el: '#app'
+			})
+		</script>
+	</body>
+
+</html>
