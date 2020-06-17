@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.box {}
+
+			.container {}
+
+			.header,
+			.footer {
+				text-align: center;
+				line-height: 140px;
+				background-color: red;
+			}
+
+			.aside {
+				width: 200px;
+				background-color: #000;
+				float: left;
+				text-align: center;
+				color: #fff;
+				line-height: 520px;
+			}
+
+			.content {
+				line-height: 200px;
+				padding: 20px;
+				color: #fff;
+				background-color: blue;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box" v-cloak>
+			<el-container>
+				<el-aside>Aside</el-aside>
+				<el-container>
+					<el-header>Header</el-header>
+					<el-main>Main</el-main>
+					<el-footer>Footer</el-footer>
+				</el-container>
+			</el-container>
+		</div>
+		<template id="container">
+			<div class="container">
+				<slot></slot>
+			</div>
+		</template>
+		<!-- 侧边 -->
+		<template id="aside">
+			<div class="aside">
+				<slot></slot>
+			</div>
+		</template>
+		<!-- 头部 -->
+		<template id="header">
+			<div class="header">
+				<slot></slot>
+			</div>
+		</template>
+		<!-- 内容 -->
+		<template id="content">
+			<div class="content">
+				<slot></slot>
+			</div>
+		</template>
+		<!-- 尾部 -->
+		<template id="footer">
+			<div class="footer">
+				<slot></slot>
+			</div>
+		</template>
+
+	</body>
+	<script src="vue.js"></script>
+	<script>
+		Vue.component('el-container', {
+			template: "#container"
+		})
+		Vue.component("el-aside", {
+			template: "#aside"
+		})
+		Vue.component("el-header", {
+			template: "#header"
+		})
+		Vue.component("el-main", {
+			template: "#content"
+		})
+		Vue.component("el-footer", {
+			template: "#footer"
+		})
+		new Vue({
+			el: '.box',
+		})
+	</script>
+</html>
