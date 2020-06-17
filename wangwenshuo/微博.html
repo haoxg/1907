@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>#和地球自拍#</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+				list-style: none;
+			}
+
+			.abox {
+				color: #808080;
+			}
+
+			.abox:hover {
+				color: #eb7350;
+			}
+
+			.ulBox {
+				width: 601px;
+				height: 25px;
+				margin-top: 15px;
+				border-top: 1px solid #f2f2f5;
+				position: relative;
+			}
+
+			.ulBox>li {
+				width: 150px;
+				line-height: 22px;
+				margin: 7px;
+				text-align: center;
+				position: absolute;
+				font-size: 12px;
+				cursor: pointer;
+				user-select: none;
+			}
+
+			.ulBox>li:hover {
+				color: #EB7350;
+			}
+
+			.one {
+				left: 0;
+			}
+
+			.two {
+				left: 150px;
+				border-left: 1px solid #d9d9d9;
+			}
+
+			.three {
+				left: 300px;
+				border-left: 1px solid #d9d9d9;
+			}
+
+			.four {
+				right: 0;
+				border-left: 1px solid #d9d9d9;
+			}
+
+			.xiaBox {
+				position: absolute;
+				right: -115px;
+				top: -15px;
+				width: 41px;
+				height: 16px;
+				padding: 4px 0 6px 0;
+				text-align: center;
+				font-size: 18px;
+				color: #808080;
+			}
+			.showBox {
+				position: absolute;
+				width: 82px;
+				height: 64px;
+				border: 1px solid #000;
+				z-index: 999;
+				right: -95px;
+				top: 10px;
+				background: #fff;
+			}
+			.showBox>a{
+				padding: 7px 13px;
+				font-size: 12px;
+				width: 56px;
+				line-height: 19px;
+				display: block;
+				cursor: pointer;
+				color: #333;
+			}
+			.showBox>a:hover{
+				color: #EB7350;
+				background-color: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<my-card></my-card>
+		</div>
+		<template id="my-card">
+			<div id="mybox" style="width: 600px; height: 500px;padding: 20px 20px 4px; margin: 50px auto; border: 1px solid #000000;">
+				<div style="width: 500px; position: relative;">
+					<img src="https://tvax4.sinaimg.cn/crop.0.0.178.178.1024/6200e46aly1gdiktlx0r1j204z04zaa1.jpg?KID=imgbed,tva&Expires=1591896382&ssig=GnfwcWvb4o"
+					 style="width: 50px; height: 50px; border-radius: 50%; float: left; margin-bottom: 500px; margin-right: 20px;">
+					<h4 style="width: 500px; line-height: 30px; font-size: 16px;">
+						美国国家地理
+					</h4>
+					<p style="font-size: 12px; color: #808080; margin-bottom: 2px;">
+						<a href="https://www.weibo.com/1644225642/J60Wm2v2H?from=page_1002061644225642_profile&wvr=6&mod=weibotime&type=c"
+						 class="abox">{{createTime | timer}}</a>
+						来自
+						<a href="https://weibo.com/" class="abox"> 微博 weibo.com</a>
+					</p>
+					<p style="width: 500px; font-size: 14px; color: #333;margin-left: 70px; line-height: 23px;">
+						<a href="" style="font-size: 14px; color: #eb7350; ">#和地球自拍#</a>
+						泰戈尔说:“天空没有留下翅膀的痕迹，但我已经飞过。”那如果鸟儿留下飞过的痕迹，会是什么样呢？巴塞罗那摄影师哈维·博乌致力于捕捉飞鸟转瞬即逝的身影轮廓，并将它们合成下面的照片。
+					</p>
+					<div style="width: 500px;height: 338px;">
+						<div v-for="i in 9" style="width: 110px; height: 110px; float: left;margin: 4px 2px 0px;">
+							<img :src="'image/' + i + '.jpg'" alt="" style="width:100%;height:100%;">
+						</div>
+					</div>
+					<ul class="ulBox">
+						<li class="one">收藏</li>
+						<li class="two">转发</li>
+						<li class="three">评论</li>
+						<li class="four">点赞</li>
+					</ul>
+					<a href="javascript:void(0);" class="xiaBox" @click='show = !show'>∨</a>
+					<div class="showBox" v-show='show'>
+						<a href="">帮上头条</a>
+						<a href="">投诉</a>
+					</div>
+				</div>
+			</div>
+		</template>
+	</body>
+</html>
+<script src="vue.js"></script>
+<script>
+	Vue.component('my-card', {
+		template: '#my-card',
+		data() {
+			return {
+				createTime: '6月10日 18:30',
+				show: false
+			}
+		},
+		filters: {
+			timer: function(time) {
+				var nowTime = new Date().getTime()
+
+				var createTime = new Date(time).getTime()
+
+				var to = (nowTime - createTime) / 1000
+				if (to <= 60) {
+					return '刚刚'
+				} else if (to <= 600) {
+					return parseInt(ct / 60) + '分钟前'
+				} else {
+					return time
+				}
+			}
+		}
+	})
+	new Vue({
+		data() {
+			return {
+				num: 1,
+			}
+		}
+	}).$mount('#box')
+</script>

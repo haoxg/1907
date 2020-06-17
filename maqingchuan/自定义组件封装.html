@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>组件封装</title>
+    <style>
+        * {
+
+            user-select: none;
+        }
+
+        .el_container {
+            background-color: blue;
+        }
+
+        .el_page {}
+
+        .el_page span {
+            margin-right: 5px;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bolder;
+        }
+
+        .el_page .bg {
+            background-color: whitesmoke;
+        }
+
+
+        .el_page .pre,
+        .el_page .next {
+            cursor: pointer;
+        }
+
+        .el-header,
+        .el-footer {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        .el-aside {
+            background-color: #D3DCE6;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+            height: 60px;
+            background-color: whitesmoke;
+
+        }
+
+        .el-main {
+            background-color: #E9EEF3;
+            color: #333;
+            text-align: center;
+            line-height: 160px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wp">
+        <!-- <el_container></el_container> -->
+        <el_page page='10'></el_page>
+        <el_page page='8' background='orange'></el_page>
+        <el_header></el_header>
+        <el_aside></el_aside>
+        <el_main></el_main>
+        <el_footer></el_footer>
+    </div>
+
+    <template id="el_header">
+        <div class="el-header">
+            <slot>header</slot>
+        </div>
+    </template>
+    <template id="el_aside">
+        <div class="el-aside">
+            <slot>aside</slot>
+        </div>
+    </template>
+    <template id="el_main">
+        <div class="el-main">
+            <slot>main</slot>
+        </div>
+    </template>
+    <template id="el_footer">
+        <div class="el-footer">
+            <slot>footer</slot>
+        </div>
+    </template>
+
+    <template id="el_page">
+        <div class="el_page">
+            <span class="pre" @click="pre"><</span> <span v-for="i in Number(page)" @click="ind=i"
+                    :style= i==ind?{"color":'orange'}:''>
+                    {{i}}</span>
+            <span class="next" @click=next>></span>
+            前往<input type="text" v-model="ind">页
+        </div>
+    </template>
+
+</body>
+<script>
+    let vm = new Vue({
+        components: {
+            'el_container': {
+                props: [],
+                template: '#el_container',
+
+            },
+            'el_header': {
+                props: [],
+                template: '#el_header',
+            },
+            'el_main': {
+                props: [],
+                template: '#el_main',
+            },
+            'el_aside': {
+                props: [],
+                template: '#el_aside',
+            },
+            'el_footer': {
+                props: [],
+                template: '#el_footer',
+            },
+            'el_page': { //分页组件
+                props: ['page', 'background'],
+                template: '#el_page',
+                data() {
+                    return {
+                        ind: 1,
+                        bg: this.background,
+                        isbg: false
+                    }
+                },
+                methods: {
+                    pre() {
+                        this.ind > 1 ? this.ind-- : this.ind = 1
+                    },
+                    next() {
+                        this.ind < this.page ? this.ind++ : this.ind = this.page
+                    },
+                },
+                mounted() {
+
+                },
+            }
+
+
+        }
+
+    }).$mount('.wp')
+</script>
+
+</html>
