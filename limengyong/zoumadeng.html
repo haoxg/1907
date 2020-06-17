@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                text-decoration: none;
+            }
+
+            [v-cloak] {
+                display: none;
+            }
+
+            .content {
+                width: 400px;
+                height: 300px;
+                margin: 50px auto;
+                position: relative;
+                /* overflow: hidden; */
+            }
+
+            .content a {
+                width: 30px;
+                height: 30px;
+                background-color: #cccccc;
+                position: absolute;
+                top: 50%;
+                margin-top: -15px;
+                z-index: 2;
+                text-align: center;
+                line-height: 30px;
+                display: none;
+            }
+
+            .content:hover a {
+                display: block;
+            }
+
+            #pre {
+                left: 0;
+            }
+
+            #next {
+                right: 0;
+            }
+
+            .el-carousel__item {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                text-align: center;
+                transition: 0.5s;
+            }
+
+            .el-carousel__item h3 {
+                color: #475669;
+                font-size: 14px;
+                opacity: 0.75;
+                line-height: 150px;
+                margin: 0;
+            }
+
+            .el-carousel__item:nth-child(2n) {
+                background-color: #99a9bf;
+            }
+
+            .el-carousel__item:nth-child(2n+1) {
+                background-color: #d3dce6;
+            }
+
+            .list {
+                display: flex;
+                position: absolute;
+                bottom: 10px;
+                width: 144px;
+                left: 128px;
+            }
+
+            .list li {
+                width: 30px;
+                height: 3px;
+                background-color: wheat;
+                margin: 3px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box" v-cloak>
+            <el-carousel>
+                <el-carousel-item v-for="i in 4" :key="i" :style="{zIndex:'-'+i}" ref="man">
+                    <h3>{{i}}</h3>
+                </el-carousel-item>
+            </el-carousel>
+        </div>
+        <template id="carousel">
+            <div class="content">
+                <a href="javascript:;" id="pre" @click="pre">&lt;</a>
+                <a href="javascript:;" id="next" @click="next">&gt;</a>
+                <slot></slot>
+                <ul class="list">
+                    <li v-for="i in 4"></li>
+                </ul>
+            </div>
+        </template>
+        <template id="carouselitem">
+            <div class="el-carousel__item">
+                <slot></slot>
+            </div>
+        </template>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('el-carousel', {
+            template: '#carousel',
+            props: ['num'],
+            data() {
+                return {
+                    n: 0
+                }
+            },
+            methods: {
+                next() {
+
+                    // console.log(this.n++)
+                    var show = this.$root.$refs.man[this.n].$el;
+                    if (this.n > 4) {
+                        this.n = 0
+                        // show.style.left = this.n * -400 + 'px'
+                    } else {
+                        this.n++;
+                        // show.style.left = this.n * -400 + 'px'
+                    }
+                    // this.n++;
+                    show.style.left = -400 + 'px'
+                },
+                pre() {
+                    console.log(this.$root.$refs.man)
+                    var show = this.$root.$refs.man[this.n].$el;
+                    if (this.n == 0) {
+                        this.n = 4
+                    } else {
+                        this.n--
+                    }
+                    // if (this.n < 0) {
+                    //     this.n = 4;
+
+                    // } else {
+                    //     this.n--;
+                    // }
+                    show.style.left = 400 + 'px'
+                }
+            },
+            mounted() {
+
+            }
+        })
+        Vue.component('el-carousel-item', {
+            template: '#carouselitem'
+        })
+        new Vue().$mount('#box')
+    </script>
+
+</html>
