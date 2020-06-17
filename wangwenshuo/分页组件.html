@@ -15,7 +15,7 @@
         #app{
             width: 500px;
             height: 40px;
-            background: blue;
+            background: lightpink;
             margin:60px auto;
             position: relative;
             padding:10px 0 10px 10px;
@@ -73,7 +73,7 @@
             font-size: 12px;
         }
         .Pagination>div>.active{
-            background: #d5ed86;
+            background: #ccc;
         }
     </style>
 </head>
@@ -86,11 +86,6 @@
     </div>
     <!-- 分页 -->
     <template id="list">
-        <!-- <div class="Pagination">
-            <button class="prev" @click='prev'>上一页</button>
-            <div><div v-for='i in 10' :key='i' :class="i == sum?'active':''" @click='list(i)' >{{i}}</div></div>
-            <button class="next" @click='next'>下一页</button>
-        </div> -->
         <div class="Pagination">
             <button class="prev" @click='prev'>上一页</button>
             <div><div v-for='i in 10' :key='i'  @click='list(i)' :class="i == num?'active':''">{{i}}</div></div>

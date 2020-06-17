@@ -12,58 +12,16 @@
             margin: 0;
             padding: 0;
         }
-        #app{
+        #box{
             width: 500px;
             height: 400px;
             margin: auto;
             background: pink;
         }
-        .cont{
-            width: 500px;
-            height:400px;
-            overflow: hidden;
-        }
-        .left{
-            width: 20%;
-            height: 400px;
-            float: left;
-            background: #ccc;
-            text-align: center;
-            line-height: 400px;
-        }
-        .right{
-            width: 80%;
-            height: 400px;
-            float: right;
-        }
-        .header{
-            width: 100%;
-            height: 100px;
-            float: left;
-            background: red;
-            text-align: center;
-            line-height: 100px;
-        }
-        .content{
-            width: 100%;
-            height: 200px;
-            float: left;
-            background: green;
-            text-align: center;
-            line-height: 200px;
-        }
-        .footer{
-            width: 100%;
-            height: 100px;
-            float: left;
-            background: yellow;
-            text-align: center;
-            line-height: 100px;
-        }
     </style>
 </head>
 <body>
-    <div id="app" v-cloak>
+    <div id="box" v-cloak>
         <container>
             <left>left</left>
             <right>
@@ -80,32 +38,32 @@
         </container>
     </div>
     <template id="container">
-        <div class="cont">
+        <div style="width: 500px;height:400px;overflow: hidden;">
             <slot></slot>
         </div>
     </template>
 
     <!-- 右 -->
     <template id="Aright">
-        <div class="right">
+        <div style=" width: 80%;height: 400px;float: right;">
             <slot></slot>
         </div>
     </template>
     <!-- 左边栏 -->
     <template id="Aside">
-        <div class="left"><slot></slot></div>
+        <div style=" width: 20%;height: 400px;float: left;background: #ccc;text-align: center;line-height: 400px;"><slot></slot></div>
     </template>
     <!-- 头部 -->
     <template id="Aheader">
-        <div class="header"><slot></slot></div>
+        <div style=" width: 100%;height: 100px;float: left;background: red;text-align: center;line-height: 100px;"><slot></slot></div>
     </template>
      <!-- 内容 -->
      <template id="content">
-        <div class="content"><slot></slot></div>
+        <div style="width: 100%;height: 200px;float: left;background: green;text-align: center;line-height: 200px;"><slot></slot></div>
     </template>
     <!-- 页尾 -->
     <template id="footer">
-        <div class="footer"><slot></slot></div>
+        <div style="width: 100%;height: 100px;float: left;background: yellow;text-align: center;line-height: 100px;"><slot></slot></div>
     </template>
 </body>
 <script src="vue.js"></script>
@@ -134,7 +92,7 @@
         template:'#footer'
     })
     new Vue({
-        el:'#app'
+        el:'#box'
     })
 </script>
 </html>
