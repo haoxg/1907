@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			[v-cloak]{
+				display: none;
+			}
+			button{
+				position: absolute;
+				top: 50%;
+				cursor: pointer;
+				z-index: 9999;
+			}
+			button:nth-of-type(2){
+				right: 0;
+			}
+			
+			.v-enter {
+				transform: translateX(400px);
+			}
+			
+			.v-enter-to {
+				transform: translateX(0);
+			}
+			
+			.v-enter-active {
+				transition: all .3s;
+			}
+			
+			.v-leave {
+				transform: translateX(0px);
+			}
+			
+			.v-leave-to {
+				transform: translateX(-400px);
+			}
+			
+			.v-leave-active {
+				transition: all .3s;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" v-cloak style="width: 400px; height: 300px; margin: auto;">
+			<el-box>
+				<transition-group tag="div" style="width: 400px; height: 300px; overflow: hidden;">
+					<el-item v-for='i in arr' :key="i">
+						<h3>{{i}}</h3>
+					</el-item>
+				</transition-group>
+			</el-box>
+		</div>
+		
+		<template id="el-box">
+			<div style="width: 400px; height: 300px; position: relative;">
+				<button @click="right">《</button>
+				<button @click="left">》</button>
+				<div class="showbox">
+					<slot></slot>
+				</div>
+			</div>
+		</template>
+		
+		<template id="el-item">
+			<div style="width: 400px; height: 300px; line-height: 300px ; text-align: center; background: #EE82EE;  float: left;">
+				<slot></slot>
+			</div>
+		</template>
+	</body>
+</html>
+<script src="vue.js"></script>
+<script>
+	Vue.component('el-box', {
+		template:'#el-box',
+		data() {
+			return {
+				a:this.$parent.arr
+			}
+		},
+		methods: {
+			left() {
+				this.$parent.arr.shift(this.$parent.arr.push())
+				// this.a.shift()
+				// var newarr = []
+				// newarr.push(this.a.shift())
+				// console.log(this.a.shift())
+				if(this.a.length < 3){
+					// var newarr = []
+					// newarr.push(this.a.length)
+					// console.log(newarr)
+					this.a.push(this.a.length - 1)
+				}
+			},
+			right() {
+				this.$parent.arr.unshift(this.$parent.arr.pop())
+				// if(this.a.length < 2){
+				// 	// var newarr = []
+				// 	// newarr.push(this.a.length)
+				// 	// console.log(newarr)
+				// 	this.a.push(this.a.length + 0)
+				// }
+			}
+		}
+	})
+	
+	Vue.component('el-item', {
+		template:'#el-item'		
+	})
+	
+	new Vue({
+		data() {
+			return {
+				arr: [1, 2, 3, 4]
+			}
+		}
+	}).$mount('#box')
+</script>
