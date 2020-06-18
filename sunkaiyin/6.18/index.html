@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .carousel{
+            width: 400px;
+            height: 280px;
+            background-color: #ccc;
+            margin: auto;
+        }
+        .carousel-container{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-container button{
+            position: absolute;
+            top:50%;
+        }
+        .carousel-container button:last-child{
+            right: 0;
+        }
+        .item{
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background-color: red;
+            font-size: 40px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .item.is-animating{
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+    <div id="myapp">
+
+        <el-carousel :autoplay="false" :initial-index="2">
+            <el-carousel-item v-for="item in 4" :key="item"
+                >{{item}}</el-carousel-item>
+                
+        </el-carousel>
+        
+    </div>
+    
+    <template id="carousel">
+        <div class="carousel">
+            <div class="carousel-container">
+                <slot></slot>
+                <button @click="left"><</button>
+                <button @click="right">></button>
+            </div>
+        </div>
+    </template>
+    <template id="item">
+        <div class="item" :class="{'is-animating':animating}" :style="itemstyle">
+            <slot></slot>
+        </div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('elCarousel',{
+        template:'#carousel',
+        props:['autoplay','initial-index'],
+        data(){
+            return {
+                currentIndex:this['initialIndex'] || 0,
+                dirctive: 'r'
+            }
+        },
+        mounted(){
+            this.$children[this.currentIndex].left = '0px'
+            this.$children[this.currentIndex-1<0?3:this.currentIndex].left = '-400px'
+
+            if(this.autoplay){
+                // 开启定时器
+                setInterval(() => {
+                    this.right();
+                }, 2000);
+            }
+        },
+        watch:{
+            currentIndex(newval,oldval){
+                this.$children.forEach(element => {
+                    element.animating = false
+                });
+                // 定义左右item 的位置
+                this.dirctive == 'r'? this.$children[newval+1>3?0:newval+1].left = '400px' : this.$children[newval-1<0?3:newval-1].left = '-400px'
+                this.$children[oldval].animating = true;
+                this.$children[newval].animating = true;
+                this.$children[oldval].left = this.dirctive == 'r'?'-400px':'400px'
+                this.$children[newval].left = '0px'
+                
+                this.$emit('change',newval)
+            }
+        },
+        methods:{
+            left(){
+                this.dirctive = 'l'
+                this.currentIndex<=0?this.currentIndex = 3:this.currentIndex--;
+            },
+            right(){
+                this.dirctive = 'r'
+                this.currentIndex>=3?this.currentIndex = 0:this.currentIndex++;
+            }
+        }
+    })
+    Vue.component('elCarouselItem',{
+        template:'#item',
+        data(){
+            return {
+                left:'400px',
+                animating: false
+            }
+        },
+        computed:{
+            itemstyle(){
+                return {transform: 'translateX('+this.left+') scale(1)'}
+            }
+        }
+    })
+    var vm = new Vue({
+        el:'#myapp',
+        data:{
+        }
+    })
+</script>
+
+</html>
