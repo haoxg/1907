@@ -65,7 +65,7 @@
 	<body>
 		<div class="box">
 			<el-carousel width="300px">
-				<el-carousel-item v-for="item in 5" :key="item">
+				<el-carousel-item v-for="item in 6" :key="item">
 					<h3>{{item}}</h3>
 				</el-carousel-item>
 			</el-carousel>
@@ -87,7 +87,7 @@
 				props: ['autoplay', 'loop', 'interval', 'initial', 'width', 'height'],
 				data() {
 					return {
-						nIndex: this.initial || 2,
+						nIndex: this.initial || 0,
 						nLenth: 0,
 						isAuto: this.autoplay || true,
 						isLoop: this.loop || true,
@@ -106,10 +106,8 @@
 					this.$refs.parent.style.height = this.nHeight
 					this.$refs.container.style.width = this.nWidth
 					this.$refs.container.style.height = this.nHeight
-					this.$refs.parent.children[this.nIndex - 1].style.transform = 'translateX(-' + this.nWidth + ')'
-					this.$refs.parent.children[this.nIndex].style.zIndex = 2
-					this.$refs.parent.children[this.nIndex + 1].style.transform = 'translateX(' + this.nWidth + ')'
 					this.nLenth = this.$refs.parent.children.length
+					this.fnStyle()
 					if (this.isAuto) {
 						this.mouseOut()
 					}
