@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #app{
+            width: 600px;
+            height: 350px;
+            margin: 100px auto;
+        }
+        .show{
+            width: 100%;
+            height: 100%;
+        }
+        .container>button{
+            width: 60px;
+            height: 60px;
+            display: block;
+            text-decoration: none;
+            color: #ccc;
+            position: absolute;
+            top: 50%;
+            margin-top: -30px;
+            text-align: center;
+            line-height: 30px;
+            opacity: 0;
+            transition: .5s all;
+            border-radius: 5px;
+            z-index: 9;
+            outline: none;
+            font-size: 30px;
+        }
+        .prev{
+            left: 10px;
+        }
+        .next{
+            right: 10px;
+        }
+        .container:hover>button{
+            opacity: 0.7;
+        }
+        .container{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .item{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            text-align: center;
+            line-height: 250px;
+        }
+        .item>img{
+            width: 100%;
+            height: 100%;
+            display: block;
+            -webkit-user-drag: none;
+        }
+
+        .v-enter {
+            transform: translateX(400px);
+        }
+
+        .v-enter-to {
+            transform: translateX(0);
+        }
+
+        .v-enter-active {
+            transition: all 1s;
+        }
+
+        .v-leave{
+            transform: translateX(0px);
+        }
+        .v-leave-to{
+            transform: translateX(-400px);
+        }
+        .v-leave-active{
+            transition: all 0.75s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <el-carousel :initial-index="''">
+            <transition-group tag='div'>
+                <el-carousel-item v-for='(i,$index) in list' :key='i'>
+                    <img :src=`./img/${i}.jpg` alt="">
+                </el-carousel-item>
+            </transition-group>
+        </el-carousel>
+    </div>
+<!--  -->
+    <template id="carousel">
+        <div class="show">
+            <div class="container">
+                <button class="prev" @click='prev'>&lt;</button>
+                <button class="next" @click='next'>&gt;</button>
+                <slot></slot>
+            </div>
+        </div>
+    </template>
+<!--  -->
+    <template id="item">
+        <div class="item" :style="{itemstyle}"><slot></slot></div>
+    </template>
+</body>
+<script src="vue.js"></script>
+<script>
+    Vue.component('elCarousel',{
+        template:'#carousel',
+        props:['initial-index'],
+        data(){
+            return {
+                isIndex:this['initialIndex'] || 0,
+                b:this.$parent.list,
+                a:[],
+            }
+        },
+    
+        methods:{
+            next(){
+                this.a.push(this.b[this.b.length-1])
+                this.b.pop()
+                if (this.b.length<=0) {
+                    
+                    this.$parent.list = [4,3,2,1]
+                    this.b=this.$parent.list
+                }
+            },
+            prev(){
+                this.$parent.list.push(this.b.shift())
+            }
+        }
+    })
+
+            Vue.component('elCarouselItem',{
+                template:'#item',
+                data(){
+                    return {
+                        left:400
+                    }
+                },
+                computed:{
+                    itemstyle(){
+                        return {transform: 'translateX('+this.left+') scale(1)'}
+                    }
+                }
+            })
+            new Vue({
+                el:'#app',
+                data(){
+                    return {
+                        list:[4,3,2,1]
+                    }
+                }
+            })
+</script>
+</html>

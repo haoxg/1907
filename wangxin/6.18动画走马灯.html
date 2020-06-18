@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件动画循环</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        #content {
+            width: 400px;
+            height: 300px;
+            border: 1px solid slateblue;
+            margin: auto;
+            position: relative;
+        }
+        
+        #content:hover>#but {
+            display: block;
+        }
+        
+        #but {
+            width: 30px;
+            height: 30px;
+            background-color: slategray;
+            border-radius: 50px;
+            position: absolute;
+            outline: none;
+            /* border: none; */
+            display: none;
+        }
+        
+        .left {
+            left: 0px;
+            top: 120px;
+        }
+        
+        .right {
+            right: 0px;
+            top: 120px;
+        }
+        
+        #conner {
+            width: 400%;
+            height: 300px;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        #active {
+            width: 400px;
+            height: 300px;
+            float: left;
+            background-color: aquamarine;
+            text-align: center;
+            line-height: 300px;
+            font-size: 25px;
+        }
+        /* 显示到隐藏
+               v-leave   开始前
+               v-leave-active  进行时
+               v-leave-to  结束
+          隐藏到显示
+               v-enter   开始前
+               v-enter-active  进行时
+               v-enter-to  结束 */
+        
+        .v-leave {
+            transform: translateX(0px);
+            /* transition: all 1s; */
+        }
+        
+        .v-leave-active,
+        .v-enter-active {
+            transition: all 1s;
+        }
+        
+        .v-leave-to {
+            transform: translateX(-400px);
+            /* transition: all 1s; */
+        }
+        
+        .v-enter {
+            transform: translateX(400px);
+            /* transition: all 1s; */
+        }
+        
+        .v-enter-to {
+            transform: translateX(0px);
+            /* transition: all 1s; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <el-carousel></el-carousel>
+    </div>
+    <template id="carousel">
+        <div id="content">
+            <button id="but" class="left" @click="prev">←</button>
+            <button id="but" class="right" @click="next">→</button>
+            <div id="conner">
+                <transition-group>
+                    <div  id="active" v-for="(i,$index) in index" :key="i">{{i}}</div>
+                </transition-group>
+            </div>
+           
+
+        </div>
+    </template>
+
+    <script>
+        Vue.component("el-carousel", {
+            template: "#carousel",
+            data() {
+                return {
+                    index: [1, 2, 3, 4]
+                }
+            },
+            methods: {
+                prev() {
+                    // console.log('ok')
+                    this.a.shift()
+                },
+                next() {
+                    this.index.shift()
+                        // console.log('ok')
+                }
+            }
+        })
+
+
+        new Vue({
+            el: "#box",
+
+        })
+    </script>
+</body>
+
+</html>
