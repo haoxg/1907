@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>走马灯</title>
+		<script src="vue.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.el_carousel {
+				width: 700px;
+				height: 400px;
+				background: aqua;
+			}
+
+			.main {
+				color: #000;
+				font-size: 20px;
+				line-height: 400px;
+				text-align: center;
+			}
+/* 
+			.color {
+				width: 25px;
+				height: 40px;
+			} */
+		</style>
+	</head>
+	<body>
+		<div id="box" style="margin: 100px auto;">
+			<el_carousel :item="4"></el_carousel>
+		</div>
+
+		<template id="light">
+			<div class="swiper-container el_carousel">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide main" v-for='i in 4' :key=i>{{i}}</div>
+				</div>
+				<div class="swiper-pagination"></div>
+				<div class="swiper-button-prev color"></div>
+				<div class="swiper-button-next color"></div>
+			</div>
+		</template>
+</html>
+<script>
+	new Vue({
+		el: '#box',
+		components: {
+			'el_carousel': {
+				template: "#light",
+				props: {
+					item: { //渲染几个内容
+
+					},
+					initial_index: { //开始显示下标
+						default: 0
+					},
+					loop: { //是否循环
+						default: true
+					},
+					arrow: { //箭头显示时机
+						default: 'always'
+					},
+					interval: { //自动切换时间
+						default: 0
+					},
+					direction: { //切换的方向
+						default: 'horizontal'
+					}
+				},
+				mounted() {
+					var mySwiper = new Swiper('.el_carousel', {
+						direction: this.direction,
+						loop: this.loop,
+						autoplay: this.interval,
+						nextButton: '.swiper-button-next',
+						prevButton: '.swiper-button-prev',
+						initialSlide: this.initial_index, //默认显示
+						simulateTouch: false,
+					})
+				}
+
+
+			}
+		}
+	})
+</script>
