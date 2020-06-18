@@ -10,11 +10,10 @@
 				margin: 0;
 			}
 
-			/* 	.carousel {
-				overflow: hidden;
-				width: 300px;
+			.carousel {
+				position: relative;
 				margin: auto;
-			} */
+			}
 
 			.carousel .parent {
 				background-color: #000000;
@@ -37,19 +36,45 @@
 				text-align: center;
 				transition: .5s;
 			}
+
+			.carousel>p {
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				line-height: 40px;
+				margin: -25px 10px;
+				text-align: center;
+				font-size: 28px;
+				border-radius: 50px;
+				border: 1px solid #000000;
+				z-index: 10;
+				top: 50%;
+				user-select: none;
+				cursor: pointer;
+			}
+
+			.carousel .left {
+				left: 0;
+			}
+
+			.carousel .right {
+				right: 0;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="box">
 			<el-carousel width="300px">
-				<el-carousel-item v-for="item in 5" :key="item">
+				<el-carousel-item v-for="item in 6" :key="item">
 					<h3>{{item}}</h3>
 				</el-carousel-item>
 			</el-carousel>
 		</div>
 
 		<template id="carousel">
-			<div class="carousel">
+			<div class="carousel" ref="container" @mouseenter="mouseIn" @mouseleave="mouseOut">
+				<p class="left" ref="left" @click="pgUp">&lt;</p>
+				<p class="right" ref="right" @click="pgDown">&gt;</p>
 				<div class="parent" ref="parent">
 					<slot></slot>
 				</div>
@@ -59,14 +84,17 @@
 		<script type="text/javascript">
 			Vue.component('el-carousel', {
 				template: '#carousel',
-				props: ['autoplay', 'arrow', 'loop', 'interval', 'initial', 'width', 'height'],
+				props: ['autoplay', 'loop', 'interval', 'initial', 'width', 'height'],
 				data() {
 					return {
-						nIndex: this.initial || 2,
+						nIndex: this.initial || 0,
 						nLenth: 0,
 						isAuto: this.autoplay || true,
+						isLoop: this.loop || true,
 						nWidth: this.width || '300px',
-						nHeight: this.height || '150px'
+						nHeight: this.height || '150px',
+						nInterval: this.interval || 2000,
+						timer: null
 					}
 				},
 				mounted() {
@@ -76,42 +104,69 @@
 					}
 					this.$refs.parent.style.width = this.nWidth
 					this.$refs.parent.style.height = this.nHeight
-					this.$refs.parent.children[this.nIndex - 1].style.transform = 'translateX(-' + this.nWidth + ')'
-					this.$refs.parent.children[this.nIndex].style.zIndex = 2
-					this.$refs.parent.children[this.nIndex + 1].style.transform = 'translateX(' + this.nWidth + ')'
+					this.$refs.container.style.width = this.nWidth
+					this.$refs.container.style.height = this.nHeight
 					this.nLenth = this.$refs.parent.children.length
+					this.fnStyle()
 					if (this.isAuto) {
-						setInterval(() => {
-							this.nIndex++
-							this.nIndex = this.nIndex >= this.nLenth ? 0 : this.nIndex
-							var arr = []
-							for (var i = 0; i < this.nLenth; i++) {
-								arr.push(i)
-							}
-							arr.forEach(item => {
-								if (this.nIndex == this.nLenth - 1) {
-									this.$refs.parent.children[0].style.transform = 'translateX(' + this.nWidth + ')'
-									this.$refs.parent.children[0].style.zIndex = 1
-								}
-								if (item == this.nIndex - 1) {
-									this.$refs.parent.children[item].style.transform = 'translateX(-' + this.nWidth + ')'
-									this.$refs.parent.children[item].style.zIndex = 1
-								} else if (item == this.nIndex) {
-									this.$refs.parent.children[item].style.transform = 'translateX(0)'
-									this.$refs.parent.children[item].style.zIndex = 2
-								} else if (item == this.nIndex + 1) {
-									this.$refs.parent.children[item].style.transform = 'translateX(' + this.nWidth + ')'
-									this.$refs.parent.children[item].style.zIndex = 1
-								} else {
-									this.$refs.parent.children[item].style.transform = 'translateX(0)'
-									this.$refs.parent.children[item].style.zIndex = 0
-								}
-							})
-						}, 2000)
+						this.mouseOut()
 					}
 				},
 				methods: {
+					pgUp() {
+						this.nIndex--
+						this.fnStyle()
+					},
+					pgDown() {
+						this.nIndex++
+						this.fnStyle()
+					},
+					fnStyle() {
+						if (this.isLoop) {
+							this.nIndex = this.nIndex >= this.nLenth ? 0 : this.nIndex,
+								this.nIndex = this.nIndex < 0 ? this.nLenth - 1 : this.nIndex
+						} else {
+							this.nIndex = this.nIndex >= this.nLenth ? this.nLenth - 1 : this.nIndex,
+								this.nIndex = this.nIndex < 0 ? 0 : this.nIndex
+						}
+						var arr = []
+						for (var i = 0; i < this.nLenth; i++) {
+							arr.push(i)
+						}
+						arr.forEach(item => {
+							if (this.nIndex == this.nLenth - 1) {
+								this.$refs.parent.children[0].style.transform = 'translateX(' + this.nWidth + ')'
+								this.$refs.parent.children[0].style.zIndex = 1
+							}
 
+							if (item == this.nIndex - 1) {
+								this.$refs.parent.children[item].style.transform = 'translateX(-' + this.nWidth + ')'
+								this.$refs.parent.children[item].style.zIndex = 1
+							} else if (item == this.nIndex) {
+								this.$refs.parent.children[item].style.transform = 'translateX(0)'
+								this.$refs.parent.children[item].style.zIndex = 2
+							} else if (item == this.nIndex + 1) {
+								this.$refs.parent.children[item].style.transform = 'translateX(' + this.nWidth + ')'
+								this.$refs.parent.children[item].style.zIndex = 1
+							} else {
+								this.$refs.parent.children[item].style.transform = 'translateX(0)'
+								this.$refs.parent.children[item].style.zIndex = 0
+							}
+
+							if (this.nIndex == 0) {
+								this.$refs.parent.children[this.nLenth - 1].style.transform = 'translateX(-' + this.nWidth + ')'
+								this.$refs.parent.children[this.nLenth - 1].style.zIndex = 1
+							}
+						})
+					},
+					mouseIn() {
+						clearInterval(this.timer)
+					},
+					mouseOut() {
+						this.timer = setInterval(() => {
+							this.pgDown()
+						}, this.nInterval)
+					}
 				}
 			})
 

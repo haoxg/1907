@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#tupian{
+				width: 500px;
+				height: 200px;
+				margin: 0 auto;
+			}
+			#tupian div{
+				width: 100px;
+				height: 60px;
+				margin-right: 5px;
+				display: inline-block;
+			}
+			#tupian img{
+				width: 100px;
+				height: 60px;
+				display: inline-block;
+			}
+			#mask{
+				position: fixed;
+				top:0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,.3);
+				display: none;
+			}
+			#mask img{
+				width: 500px;
+				height: 350px;
+			}
+			#btn{
+				position:absolute ;
+				right: 30px;
+				top:50px;
+				width: 50px;
+				height: 50px;
+				font-size: 26px;
+				line-height: 50px;
+				color:#ccc;
+			}
+			#showBox{
+				height: 500px;
+				width: 300px;
+				position: relative;
+				left: 50%;top:50%;
+				margin-left: -250px;margin-top: -175px;
+			}
+			#showBox:hover span{
+				display: block;
+			}
+			#zuobnt,#youbnt{
+				width: 60px;
+				display: block;
+				height: 60px;
+				background-color: rgba(150,150,150,.3);
+				position: absolute;
+				top:200px;
+				font-size: 40px;
+				line-height: 60px;
+				color:#fff;
+				font-weight: 800px;
+				text-align: center;
+				display: none;
+				cursor: pointer;
+				user-select:none;
+			}
+			#zuobnt{
+				left: 0;
+			}
+			#youbnt{
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="tupian">
+			<div><img src="https://tse3-mm.cn.bing.net/th/id/OIP.wkLd-cpk2uVQ7wj8M1JMZQHaE_?w=221&h=180&c=7&o=5&dpr=1.25&pid=1.7" alt="" /></div>
+			<div><img src="https://tse4-mm.cn.bing.net/th/id/OIP.7pHw9JeukDZYky23ttT5xgHaEo?w=240&h=180&c=7&o=5&dpr=1.25&pid=1.7" alt="" /></div>
+			<div><img src="https://tse2-mm.cn.bing.net/th/id/OIP.5p1GY9PTMVkirIL90Mp6XgHaE7?w=300&h=197&c=7&o=5&dpr=1.25&pid=1.7" alt="" /></div>
+			<div><img src="https://tse3-mm.cn.bing.net/th/id/OIP.SYF7F3QpQaX0jvThEZFU1wHaEk?w=274&h=180&c=7&o=5&dpr=1.25&pid=1.7" alt="" /></div>
+		</div>
+		<div id="mask">
+			<button id="btn">X</button>
+			<div id="showBox">
+				<img src="https://tse3-mm.cn.bing.net/th/id/OIP.wkLd-cpk2uVQ7wj8M1JMZQHaE_?w=221&h=180&c=7&o=5&dpr=1.25&pid=1.7" id="showImg"/>
+				<span id="zuobnt"><</span>
+				<span id="youbnt">></span>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var oTupian=document.querySelectorAll('#tupian div');
+			console.log(oTupian);
+			var oMask=document.querySelector('#mask');
+			var oBtn=document.querySelector('#btn');
+			var oZuo=document.querySelector('#zuobnt');
+			var oYou=document.querySelector('#youbnt');
+			console.log(oMask);
+			var index=0;
+			var oShowImg=document.querySelector('#showImg');
+			var imgArr=["https://tse3-mm.cn.bing.net/th/id/OIP.wkLd-cpk2uVQ7wj8M1JMZQHaE_?w=221&h=180&c=7&o=5&dpr=1.25&pid=1.7","https://tse4-mm.cn.bing.net/th/id/OIP.7pHw9JeukDZYky23ttT5xgHaEo?w=240&h=180&c=7&o=5&dpr=1.25&pid=1.7","https://tse2-mm.cn.bing.net/th/id/OIP.5p1GY9PTMVkirIL90Mp6XgHaE7?w=300&h=197&c=7&o=5&dpr=1.25&pid=1.7","https://tse3-mm.cn.bing.net/th/id/OIP.SYF7F3QpQaX0jvThEZFU1wHaEk?w=274&h=180&c=7&o=5&dpr=1.25&pid=1.7"]
+			for (var i=0;i<oTupian.length;i++) {
+				oTupian[i].index=i;
+				oTupian[i].onclick=function(){
+					oMask.style.display='block';
+					index = this.index;
+					oShowImg.src = imgArr[index]
+				}
+			}
+			oBtn.onclick=function(){
+				oMask.style.display='none';
+			}
+			oZuo.onclick=function(){
+				index--;
+				if (index<0) {
+					index=3;
+				}
+				oShowImg.src = imgArr[index]
+			}
+			oYou.onclick=function(){
+				index++;
+				if (index>3) {
+					index=0;
+				}
+				oShowImg.src=imgArr[index]
+			}
+		</script>
+	</body>
+</html>
