@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style>
+			html,body{
+				margin: 0;
+				padding: 0;
+				user-select: none;
+			}
+			#box>div {
+				width: 800px;
+				height: 500px;
+				border: 1px solid #CCCCCC;
+				margin: 0 auto;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			#box>div>div:nth-of-type(1) {
+				transition: all .3s;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			#box>div>div:nth-of-type(2) {
+				width: 40px;
+				height: 50px;
+				background: rgba(0, 0, 0, 0.8);
+				text-align: center;
+				line-height: 50px;
+				font-size: 20px;
+				color: #FFFFFF;
+				position: absolute;
+				left: 0;
+				top: 50%;
+				margin-top: -25px;
+			}
+			
+			#box>div>div:nth-of-type(3) {
+				width: 40px;
+				height: 50px;
+				background: rgba(0, 0, 0, 0.8);
+				text-align: center;
+				line-height: 50px;
+				font-size: 20px;
+				color: #FFFFFF;
+				position: absolute;
+				right: 0;
+				top: 50%;
+				margin-top: -25px;
+			}
+			
+			#box>div>div:nth-of-type(1)>img {
+				float: left;
+				height: 500px;
+				width: 800px;
+			}
+			
+			#box>div>div:nth-of-type(4) {
+				position: absolute;
+				left: 50%;
+				bottom: 10px;
+			}
+			
+			.bg {
+				background-color: red !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box">
+			<lee :dd="arr"></lee>
+		</div>
+		<template id="s1">
+			<div>
+				<div :style="{left:'-'+index*100+'%',width:arr.length*100+'%'}">
+					<img v-for="i in arr" :src="i" />
+				</div>
+				<div @click="index<=0?index=arr.length-1:index--"><</div>
+				<div @click="index>=arr.length-1?index=0:index++">></div>
+				<div :style="{marginLeft:'-'+arr.length*20+'px',width:arr.index*20+'px'}">
+					<ul style="list-style: none;">
+						<li v-for="(i,$index) in arr" :class="$index==index?'bg':''" @click="index=$index" style="float: left;border: 1px solid black;width: 20px;height: 20px;border-radius: 50%;margin-left: 5px;"></li>
+					</ul>
+				</div>
+			</div>
+		</template>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script>
+			Vue.component('lee', {
+				template: '#s1',
+				props: ['dd'],
+				data() {
+					return {
+						index: 0,
+						arr: this.dd
+					}
+				}
+			})
+			new Vue({
+				el: '#box',
+				data: {
+					arr: [
+						'img/1.jpg',
+						'img/2.jpg',
+						'img/4.jpg',
+						'img/5.jpg',
+						'img/6.jpg'
+					]
+				}
+			})
+		</script>
+	</body>
+
+</html>
