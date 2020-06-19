@@ -113,14 +113,18 @@
         <div class="show">
             <div class="container">
                 <button class="prev" @click='prev'>&lt;</button>
+                <!-- 1 -->
                 <button class="next" @click='next'>&gt;</button>
+
                 <slot></slot>
             </div>
         </div>
     </template>
 <!--  -->
     <template id="item">
+
         <div class="item" :style="{itemstyle}"><slot></slot></div>
+
     </template>
 </body>
 <script src="vue.js"></script>
