@@ -24,18 +24,21 @@
             }
 
             .content {
-                width: 1600px;
+                width: 400px;
                 height: 300px;
-
-
+                position: relative;
             }
 
             .item {
                 width: 400px;
                 height: 300px;
                 display: inline-block;
-                border: 1px solid #cccccc;
+                background-image: url(./img/4.jpg);
+                background-size: 100% 100%;
                 box-sizing: border-box;
+                position: absolute;
+                left: 0;
+                top: 0;
             }
 
             .item h1 {
@@ -68,6 +71,30 @@
                 transition: all 1s;
             }
 
+            .left-enter {
+                transform: translateX(-400px);
+            }
+
+            .left-enter-to {
+                transform: translateX(0);
+            }
+
+            .left-enter-active {
+                transition: all 1s;
+            }
+
+            .left-leave {
+                transform: translateX(0px);
+            }
+
+            .left-leave-to {
+                transform: translateX(400px);
+            }
+
+            .left-leave-active {
+                transition: all 1s;
+            }
+
             .show a {
                 width: 30px;
                 height: 30px;
@@ -79,6 +106,7 @@
                 text-align: center;
                 line-height: 30px;
                 font-size: 20px;
+                z-index: 3;
             }
 
             #pre {
@@ -94,8 +122,8 @@
     <body>
         <div id="box" v-cloak>
             <el-content>
-                <transition-group tag="div">
-                    <el-item v-for="i in arr" :key="i">
+                <transition-group tag="div" :name="animateName">
+                    <el-item v-for="i in 4" v-if="activeIndex == i" :key="i">
                         <h1>{{i}}</h1>
                     </el-item>
                 </transition-group>
@@ -103,7 +131,7 @@
 
         </div>
         <template id="content">
-            <div class="show">
+            <div class="show" @mouseover="stopTimer" @mouseout="startTimer">
                 <a id="pre" @click="pre">&lt;</a>
                 <a id="next" @click="next">&gt;</a>
                 <div class="content">
@@ -123,25 +151,30 @@
             template: '#content',
             data() {
                 return {
-                    activeIndex: 0,
-                    a: this.$parent.arr,
+
+                    timer: null,
 
                 }
             },
             mounted() {
-                console.log(this.$parent.arr)
-            },
-            watch: {
-                a(newval, oldval) {
-                    console.log(newval, oldval)
-                }
+                this.startTimer()
             },
             methods: {
                 next() {
-                    this.a.shift()
+                    this.$parent.animateName = 'v';
+                    this.$parent.activeIndex >= 4 ? this.$parent.activeIndex = 1 : this.$parent.activeIndex++;
                 },
                 pre() {
-                    this.$parent.arr.unshift(this.$parent.arr.pop())
+                    this.$parent.animateName = 'left';
+                    this.$parent.activeIndex <= 1 ? this.$parent.activeIndex = 4 : this.$parent.activeIndex--;
+                },
+                stopTimer() {
+                    clearInterval(this.timer)
+                },
+                startTimer() {
+                    this.timer = setInterval(() => {
+                        this.next()
+                    }, 2000);
                 }
             }
         })
@@ -151,7 +184,8 @@
         new Vue({
             data() {
                 return {
-                    arr: [1, 2, 3, 4]
+                    activeIndex: 1,
+                    animateName: 'v',
                 }
             }
         }).$mount('#box')
