@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            [v-cloak] {
+                display: none;
+            }
+
+            .show {
+                width: 400px;
+                height: 300px;
+                margin: 50px auto;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .content {
+                width: 1600px;
+                height: 300px;
+
+
+            }
+
+            .item {
+                width: 400px;
+                height: 300px;
+                display: inline-block;
+                border: 1px solid #cccccc;
+                box-sizing: border-box;
+            }
+
+            .item h1 {
+                font-size: 50px;
+                text-align: center;
+                line-height: 300px;
+            }
+
+            .v-enter {
+                transform: translateX(400px);
+            }
+
+            .v-enter-to {
+                transform: translateX(0);
+            }
+
+            .v-enter-active {
+                transition: all 1s;
+            }
+
+            .v-leave {
+                transform: translateX(0px);
+            }
+
+            .v-leave-to {
+                transform: translateX(-400px);
+            }
+
+            .v-leave-active {
+                transition: all 1s;
+            }
+
+            .show a {
+                width: 30px;
+                height: 30px;
+                background-color: violet;
+                position: absolute;
+                top: 50%;
+                margin-top: -15px;
+                cursor: pointer;
+                text-align: center;
+                line-height: 30px;
+                font-size: 20px;
+            }
+
+            #pre {
+                left: 0;
+            }
+
+            #next {
+                right: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="box" v-cloak>
+            <el-content>
+                <transition-group tag="div">
+                    <el-item v-for="i in arr" :key="i">
+                        <h1>{{i}}</h1>
+                    </el-item>
+                </transition-group>
+            </el-content>
+
+        </div>
+        <template id="content">
+            <div class="show">
+                <a id="pre" @click="pre">&lt;</a>
+                <a id="next" @click="next">&gt;</a>
+                <div class="content">
+                    <slot></slot>
+                </div>
+            </div>
+        </template>
+        <template id="item">
+            <span class="item">
+                <slot></slot>
+            </span>
+        </template>
+    </body>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('el-content', {
+            template: '#content',
+            data() {
+                return {
+                    activeIndex: 0,
+                    a: this.$parent.arr,
+
+                }
+            },
+            mounted() {
+                console.log(this.$parent.arr)
+            },
+            watch: {
+                a(newval, oldval) {
+                    console.log(newval, oldval)
+                }
+            },
+            methods: {
+                next() {
+                    this.a.shift()
+                },
+                pre() {
+                    this.$parent.arr.unshift(this.$parent.arr.pop())
+                }
+            }
+        })
+        Vue.component('el-item', {
+            template: '#item',
+        })
+        new Vue({
+            data() {
+                return {
+                    arr: [1, 2, 3, 4]
+                }
+            }
+        }).$mount('#box')
+    </script>
+
+</html>
