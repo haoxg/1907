@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			
+			.carounsel {
+				width: 250px;
+				height: 150px;
+				margin: 50px;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			#list {
+				width: 400%;
+				height: 150px;
+				position: absolute;
+				transition: 0.5s;
+				left: 0;
+			}
+			
+			.carousel-item {
+				width: 250px;
+				height: 150px;
+				float: left;
+				position: relative;
+				text-align: center;
+				line-height: 150px;
+			}
+			
+			.carousel-item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.carousel-item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+			
+			h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 150px;
+				margin: 0;
+			}
+			
+			ul {
+				width: 180px;
+				margin-left: 40px;
+				margin-top: -15px;
+			}
+			
+			ul li {
+				float: left;
+				width: 40px;
+				height: 3px;
+				margin-right: 5px;
+				background-color: #ccc;
+			}
+			
+			.active {
+				background-color: white;
+			}
+			
+			.carousel-item #pre,
+			#next {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				background-color: rgba(0, 0, 0, .2);
+				position: absolute;
+				top: 60%;
+				margin-top: -40px;
+				display: none;
+				cursor: pointer;
+				font-size: 28px;
+				font-weight: 200;
+				color: white;
+				text-align: center;
+				line-height: 40px;
+				user-select: none;
+			}
+			
+			.carousel-item #pre {
+				left: 20px;
+			}
+			
+			.carousel-item #next {
+				right: 20px;
+			}
+			
+			#box #list .carousel-item:hover #pre,
+			#box #list .carousel-item:hover #next {
+				display: block;
+			}
+			
+			.v-enter {
+				transform: translateX(0px);
+			}
+			
+			.v-enter-to {
+				transform: translateX(250px);
+			}
+			
+			.v-enter-active {
+				transition: all 3s;
+			}
+			
+			.v-leave {
+				transform: translateX(250px);
+			}
+			
+			.v-leave-to {
+				transform: translateX(-250px);
+			}
+			
+			.v-leave-active {
+				transition: all 3s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box">
+			<el-carousel>
+				<div id="list" :style={left:'-'+num*w+'px'}>
+					<transition-group name="v">
+						<el-carousel-item v-for="item in arr" :key="item">
+							{{item}}
+							<ul>
+								<li v-for="(i,$index) in arr" @click='num=$index' :class="num==$index?'active':''"></li>
+							</ul>
+							<span id="pre" @click="jian"><</span>
+							<span id="next" @click="jia">></span>
+						</el-carousel-item>
+					</transition-group>
+				</div>
+			</el-carousel>
+		</div>
+		<!--模板-->
+		<el-carousel>
+			<el-carousel-item v-for="item in arr" :key="item">
+				<h3 class="small"></h3>
+			</el-carousel-item>
+		</el-carousel>
+	</body>
+	<script src="vue.js"></script>
+	<script type="text/javascript">
+		Vue.component('elCarousel', {
+			template: '<div class="carounsel"><slot></slot></div>'
+		})
+
+		Vue.component('elCarouselItem', {
+			template: '<div class="carousel-item"><slot></slot></div>'
+		})
+
+		Vue.component('')
+		new Vue({
+			el: '#box',
+			data: {
+
+				w: 250,
+				arr: [1, 2, 3, 4],
+				num: 0,
+
+			},
+			methods: {
+				jia() {
+					this.num < this.arr.length - 1 ? this.num++ : this.num = 0
+				},
+				jian() {
+
+					this.num > 0 ? this.num-- : this.num = this.arr.length - 1
+				}
+			}
+		})
+	</script>
+
+</html>
