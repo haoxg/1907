@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<title>transition</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+
+			}
+			.box {
+				width: 500px;
+				height: 300px;
+				margin: 100px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			.prev,
+			.next {
+				width: 50px;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+				color: #fff;
+				font-size: 20px;
+				background-color: rgba(29, 18, 18, 0.5);
+				border-radius: 50%;
+				position: absolute;
+				top: 50%;
+				border: none;
+				outline: none;
+				cursor: pointer;
+				z-index: 100;
+			}
+			.prev {
+				left: 10px;
+			}
+			.next {
+				right: 10px;
+			}
+			.box>ul {
+				width: 500px;
+				height: 300px;
+				overflow: hidden;
+				position: relative;
+			}
+			.box>ul>li {
+				width: 100%;
+				height: 100%;
+				float: left;
+				position: absolute;
+			}
+
+			.box>ul>li>img {
+				width: 100%;
+				height: 100%;
+			}
+			.prev-enter,
+			.prev-leave-to {
+				transform: translateX(-30px)
+			}
+			.prev-enter-active,
+			.prev-leave-active {
+				transition: all 1s;
+			}
+			.prev-enter-to,
+			.prev-leave {
+				transform: translateX(0);
+			}
+			.next-enter,
+			.next-leave-to {
+				transform: translateX(30px)
+			}
+			.next-enter-active,
+			.next-leave-active {
+				transition: all 1s;
+			}
+			.next-enter-to,
+			.next-leave {
+				transform: translateX(0);
+			}
+			.imgprev-enter-active,
+			.imgprev-leave-active,
+			.imgnext-enter-active,
+			.imgnext-leave-active {
+				transition: all .5s linear;
+			}
+			.imgprev-enter,
+			.imgnext-leave-to {
+				transform: translateX(100%);
+			}
+			.imgprev-enter-to,
+			.imgprev-leave,
+			.imgnext-enter-to,
+			.imgnext-leave {
+				transform: translateX(0);
+			}
+			.imgprev-leave-to,
+			.imgnext-enter {
+				transform: translateX(-100%);
+			}
+			.line {
+				height: 5px;
+				position: absolute;
+				bottom: 10px;
+				left: 40%;
+			}
+			.line li {
+				width: 20px;
+				height: 5px;
+				float: left;
+				margin: 0 5px;
+				background-color: #ccc;
+			}
+			.line li.active {
+				background-color: orange;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="box" @mouseover="showBtn=true" @mouseout="showBtn=false">
+				<transition name="prev">
+					<button class="prev" v-show="showBtn" @click="prev"> < </button> 
+				</transition> 
+				<transition name="next">
+					<button class="next" v-show="showBtn" @click="next"> > </button>
+				</transition>
+				<transition-group tag="ul" :name="activeImg">
+					<li v-for="(item,index) in arr" :key="item+1" v-if="activeIndex==index">
+						<img :src="item" alt="">
+					</li>
+				</transition-group>
+				<ol class="line">
+					<li v-for="(i,index) in arr.length" :class="{active:activeIndex==index}" v-show="showBtn"></li>
+				</ol>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				arr: ['http://img2.imgtn.bdimg.com/it/u=3313838802,2768404782&fm=26&gp=0.jpg',
+					  'http://img5.imgtn.bdimg.com/it/u=2729906829,3399182358&fm=26&gp=0.jpg',
+					  'http://img4.imgtn.bdimg.com/it/u=3065083747,2254395427&fm=26&gp=0.jpg'
+				],
+				showBtn: false,
+				activeIndex: 0,
+				activeImg: 'imgprev',
+			},
+			methods: {
+				prev() {
+					this.activeIndex--;
+					if (this.activeIndex < 0) {
+						this.activeIndex = this.arr.length - 1;
+					}
+					this.activeImg = 'imgnext';
+				},
+				next() {
+					this.activeIndex++;
+					if (this.activeIndex > this.arr.length - 1) {
+						this.activeIndex = 0;
+					}
+					this.activeImg = 'imgprev';
+				}
+			}
+		})
+	</script>
+</html>
