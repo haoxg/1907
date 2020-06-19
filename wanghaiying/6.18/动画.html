@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.list {
+				position: relative;
+				width: 500px;
+				height: 300px;
+				margin: 0 auto;
+			}
+
+			.list img {
+				width: 100%;
+				height: 100%;
+				position: absolute
+			}
+
+			.t {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				left: 435px;
+				top: 30%;
+				margin-top: -50px;
+				line-height: 100px;
+				font-size: 25px;
+				background: rgba(0, 0, 0, .5);
+				color: white;
+				text-align: center;
+			}
+
+			.n {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				right: 435px;
+				top: 30%;
+				margin-top: -50px;
+				line-height: 100px;
+				background: rgba(0, 0, 0, .5);
+				color: white;
+				font-size: 25px;
+				text-align: center;
+			}
+
+			.prev-leave {
+				opacity: 1;
+			}
+
+			.prev-leave-active {
+				transition: all .5s
+			}
+
+			.prev-leave-to {
+				opacity: 0;
+				transform: translateX(-150px);
+			}
+
+			.next-enter {
+				transform: translateX(-150px);
+				opacity: 0;
+			}
+
+			.next-enter-active {
+				transition: all .8s
+			}
+
+			.next-enter-to {
+				opacity: 1;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box" v-cloak>
+			<div class="list">
+				<transition>
+					<img :src="img" v-for="(img,index) in img" v-if="index == Index" :key="'image'+index">
+				</transition>
+			</div>
+			<div id="btn">
+				<span @click="prev" class="n"></span>
+				<span @click="next" class="t"></span>
+			</div>
+		</div>
+	</body>
+	<script src="vue.js"></script>
+	<script>
+		new Vue({
+			el: '.box',
+			data: {
+				img: [
+					"./img/1.jpg",
+					"./img/2.jpg",
+					"./img/3.jpg",
+					"./img/4.jpg",
+					"./img/5.jpg",
+				],
+				Index: 0,
+			},
+			methods: {
+				prev: function() {
+					if (this.Index > 0) {
+						this.Index--
+					}
+				},
+				next: function() {
+					if (this.Index < this.img.length - 1) {
+						this.Index++
+					}
+				}
+			}
+		})
+	</script>
+
+</html>
